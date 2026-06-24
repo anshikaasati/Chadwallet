@@ -1,0 +1,14 @@
+/* styles/tokens.css */
+:root {
+  --color-bg-primary: #0a0a0f;
+  --color-bg-surface: #12121a;
+  --color-accent: #7c3aed;
+  --color-buy: #22c55e;
+  --color-sell: #ef4444;
+  --color-text-primary: #f8fafc;
+  --color-text-muted: #94a3b8;
+  --color-border: #1e1e2f;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+}
