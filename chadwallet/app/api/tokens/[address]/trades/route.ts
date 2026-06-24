@@ -4,7 +4,7 @@ import { birdeye } from "@/services";
 import { handleApiError } from "@/lib/errors";
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { address: string } }
 ): Promise<NextResponse> {
   try {
@@ -15,9 +15,10 @@ export async function GET(
         { status: 400 }
       );
     }
-    const trades = await birdeye.getTokenTrades(address);
+    const trades = await birdeye.getRecentTrades(address);
     return NextResponse.json({ data: trades });
   } catch (err) {
     return handleApiError(err);
   }
 }
+export const dynamic = "force-dynamic";

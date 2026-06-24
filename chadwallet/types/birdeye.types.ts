@@ -16,6 +16,8 @@ export interface BirdEyeTokenOverview {
   history12hPrice?: number;
   history24hPrice?: number;
   priceChange24h?: number; // percent
+  priceChange24hPercent?: number;
+  v24hChangePercent?: number;
   v24hUSD?: number;
   v24h?: number;
   mc?: number;

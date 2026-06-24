@@ -4,7 +4,7 @@ import { birdeye } from "@/services";
 import { handleApiError } from "@/lib/errors";
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { address: string } }
 ): Promise<NextResponse> {
   try {
