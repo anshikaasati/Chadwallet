@@ -1,6 +1,7 @@
 // components/shared/NavBar/NavBar.tsx
 import React from "react";
 import Link from "next/link";
+import WalletButton from "../WalletButton";
 
 export interface NavBarProps {
   rightElement?: React.ReactNode;
@@ -16,9 +17,10 @@ export function NavBar({ rightElement }: NavBarProps): React.JSX.Element {
         <Link href="/trade" className="text-sm font-semibold hover:text-accent transition">
           Trade
         </Link>
-        {rightElement}
+        {rightElement || <WalletButton />}
       </div>
     </nav>
   );
 }
 export default NavBar;
+

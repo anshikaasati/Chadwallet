@@ -1,18 +1,14 @@
 // app/(app)/trade/[tokenAddress]/page.tsx
-"use client";
-
 import React from "react";
-import {
-  TradingLayout,
-  TrendingTokenList,
-  TokenInfoHeader,
-  PriceChart,
-  HoldersList,
-  LiveTradesFeed,
-  SwapPanel,
-  UserPosition,
-} from "@/components/trading";
-import { TokenStats } from "@/types";
+import { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { SOL_MINT } from "@/constants";
+import TradingPageClient from "./TradingPageClient";
+
+import { birdeye } from "@/services";
+
+// Solana base58 mint address validator
+const BASE58_REGEX = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
 
 interface TradePageProps {
   params: {
@@ -20,58 +16,37 @@ interface TradePageProps {
   };
 }
 
-export default function TradePage({ params }: TradePageProps): React.JSX.Element {
+export async function generateMetadata({ params }: TradePageProps): Promise<Metadata> {
+  const { tokenAddress } = params;
+  const isAddressValid = BASE58_REGEX.test(tokenAddress);
+  const displayAddress = isAddressValid ? tokenAddress : SOL_MINT;
+
+  let symbol = "SOL";
+  if (isAddressValid) {
+    try {
+      const info = await birdeye.getTokenOverview(displayAddress);
+      if (info && info.symbol) {
+        symbol = info.symbol;
+      }
+    } catch (err) {
+      console.error("Failed to fetch token details for generateMetadata:", err);
+    }
+  }
+
+  return {
+    title: `Trade ${symbol} | ChadWallet`,
+    description: `Solana DEX terminal. Track price details, live trade activity, and swap assets for ${symbol}.`,
+  };
+}
+
+
+export default async function TradePage({ params }: TradePageProps): Promise<React.JSX.Element> {
   const { tokenAddress } = params;
 
-  // Stub data for rendering compilation check
-  const dummyStats: TokenStats = {
-    address: tokenAddress,
-    symbol: "SOL",
-    name: "Solana",
-    logoUri: null,
-    decimals: 9,
-    price: 150.0,
-    priceChange24h: 5.25,
-    volume24h: 120000000,
-    marketCap: 70000000000,
-    liquidity: 15000000,
-    chain: "solana",
-    holders: 100000,
-    trades24h: 50000,
-    buyVolume24h: 550000.0,
-    sellVolume24h: 450000.0,
-    fdv: 80000000000.0,
-  };
+  if (!BASE58_REGEX.test(tokenAddress)) {
+    redirect(`/trade/${SOL_MINT}`);
+  }
 
-  const handleSelectToken = (address: string) => {
-    console.log("Token selected:", address);
-    // Future: router.push(`/trade/${address}`)
-  };
-
-  return (
-    <TradingLayout
-      leftColumn={
-        <TrendingTokenList
-          tokens={[]}
-          isLoading={false}
-          error={null}
-          onSelectToken={handleSelectToken}
-        />
-      }
-      middleColumn={
-        <div className="flex flex-col gap-4">
-          <TokenInfoHeader tokenStats={dummyStats} isLoading={false} error={null} />
-          <PriceChart tokenAddress={tokenAddress} />
-          <HoldersList holders={[]} isLoading={false} error={null} />
-          <LiveTradesFeed trades={[]} isLoading={false} error={null} />
-        </div>
-      }
-      rightColumn={
-        <div className="flex flex-col gap-4">
-          <SwapPanel tokenAddress={tokenAddress} tokenSymbol="SOL" />
-          <UserPosition position={null} isLoading={false} error={null} />
-        </div>
-      }
-    />
-  );
+  return <TradingPageClient tokenAddress={tokenAddress} />;
 }
+

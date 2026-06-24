@@ -1,28 +1,57 @@
 // hooks/useSwapQuote.ts
+import { useEffect, useState } from "react";
 import useSWR from "swr";
-import { QuoteRequest, QuoteResponse } from "@/types";
+import { usePrivy } from "@privy-io/react-auth";
+import { QuoteResponse } from "@/types";
 import { INTERNAL_API } from "@/constants";
 
 export interface UseSwapQuoteReturn {
-  data: QuoteResponse | undefined;
+  quote: QuoteResponse | null;
   isLoading: boolean;
   error: Error | null;
 }
 
-export function useSwapQuote(req: QuoteRequest | null): UseSwapQuoteReturn {
+export function useSwapQuote(
+  inputMint: string,
+  outputMint: string,
+  amount: number,
+  slippageBps: number
+): UseSwapQuoteReturn {
+  const { authenticated, getAccessToken } = usePrivy();
+  const [debouncedAmount, setDebouncedAmount] = useState(amount);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedAmount(amount);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [amount]);
+
+  const shouldFetch = authenticated && debouncedAmount > 0 && !!inputMint && !!outputMint;
+
   const { data, error, isLoading } = useSWR<QuoteResponse>(
-    req ? [INTERNAL_API.swapQuote, req.inputMint, req.outputMint, req.amount, req.slippageBps] : null,
+    shouldFetch ? [INTERNAL_API.swapQuote, inputMint, outputMint, debouncedAmount, slippageBps] : null,
     async () => {
-      if (!req) throw new Error("Request parameters missing");
+      const token = await getAccessToken();
       const res = await fetch(INTERNAL_API.swapQuote, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(req),
+        body: JSON.stringify({
+          inputMint,
+          outputMint,
+          amount: debouncedAmount,
+          slippageBps,
+        }),
       });
       if (!res.ok) {
-        throw new Error("Failed to retrieve swap quote");
+        const errorJson = await res.json().catch(() => ({}));
+        throw new Error(errorJson?.error?.message || "Failed to retrieve swap quote");
       }
       const json = await res.json();
       return json.data;
@@ -30,8 +59,8 @@ export function useSwapQuote(req: QuoteRequest | null): UseSwapQuoteReturn {
   );
 
   return {
-    data,
-    isLoading,
+    quote: data || null,
+    isLoading: isLoading && !data && debouncedAmount > 0,
     error: error || null,
   };
 }

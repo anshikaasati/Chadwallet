@@ -1,5 +1,6 @@
 // app/(marketing)/page.tsx
 import React from "react";
+import { Metadata } from "next";
 import HeroSection from "@/components/landing/HeroSection";
 import TokenBanner from "@/components/landing/TokenBanner";
 import { birdeye } from "@/services";
@@ -7,7 +8,27 @@ import { Token } from "@/types";
 
 export const revalidate = 15; // 15s ISR cache
 
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "ChadWallet — Trade Solana Tokens Live",
+    description: "The fastest Solana trading interface. Real-time prices, instant swaps.",
+    openGraph: {
+      title: "ChadWallet — Trade Solana Tokens Live",
+      description: "The fastest Solana trading interface. Real-time prices, instant swaps.",
+      images: [
+        {
+          url: "/chadwallet/logo.svg",
+          width: 512,
+          height: 512,
+          alt: "ChadWallet Logo",
+        },
+      ],
+    },
+  };
+}
+
 async function getInitialBannerTokens(): Promise<Token[]> {
+
   try {
     const tokens = await birdeye.getBannerTokens();
     return tokens;

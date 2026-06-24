@@ -8,6 +8,7 @@ import useTokenBanner from "@/hooks/useTokenBanner";
 import TokenLogo from "@/components/shared/TokenLogo";
 import PriceChange from "@/components/shared/PriceChange";
 import Skeleton from "@/components/ui/Skeleton";
+import { formatPrice } from "@/lib/utils";
 
 export interface TokenBannerProps {
   direction?: "left" | "right";
@@ -46,22 +47,6 @@ export function TokenBanner({
   const duplicatedTokens = [...tokens, ...tokens];
   const marqueeClass = direction === "left" ? "animate-marquee-left" : "animate-marquee-right";
 
-  const formatPrice = (price: number): string => {
-    if (price < 1) {
-      return price.toLocaleString("en-US", {
-        style: "currency",
-        currency: "USD",
-        minimumFractionDigits: 4,
-        maximumFractionDigits: 4,
-      });
-    }
-    return price.toLocaleString("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  };
 
   return (
     <div className="w-full py-2 bg-bg-surface border-y border-border overflow-hidden select-none">

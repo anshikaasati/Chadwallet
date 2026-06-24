@@ -9,6 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://chadwallet-production.vercel.app"),
   title: "ChadWallet",
   description: "Degen Solana trading wallet. Swap tokens instantly with Privy and Jupiter.",
 };

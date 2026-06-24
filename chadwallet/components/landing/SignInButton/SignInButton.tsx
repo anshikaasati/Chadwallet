@@ -28,10 +28,10 @@ export function SignInButton(): React.JSX.Element {
                 walletAcc.address.length <= 44)
             );
           });
-          const walletAddress = solanaWallet ? (solanaWallet as any).address as string : null;
+          const walletAddress = solanaWallet ? (solanaWallet as unknown as { address: string }).address : null;
 
           const emailAccount = user.linkedAccounts.find((acc) => acc.type === "email");
-          const email = emailAccount ? (emailAccount as any).address as string : null;
+          const email = emailAccount ? (emailAccount as unknown as { address: string }).address : null;
 
           const token = await getAccessToken();
           if (token && active) {
@@ -84,7 +84,7 @@ export function SignInButton(): React.JSX.Element {
       );
     });
     const walletAddress = solanaWallet
-      ? ((solanaWallet as any).address as string)
+      ? ((solanaWallet as unknown as { address: string }).address)
       : "";
 
     const shortAddress = walletAddress

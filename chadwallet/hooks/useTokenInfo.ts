@@ -4,7 +4,7 @@ import { TokenStats } from "@/types";
 import { INTERNAL_API, POLL_TOKEN_INFO_MS } from "@/constants";
 
 export interface UseTokenInfoReturn {
-  data: TokenStats | undefined;
+  tokenInfo: TokenStats | null;
   isLoading: boolean;
   error: Error | null;
 }
@@ -25,8 +25,8 @@ export function useTokenInfo(tokenAddress: string): UseTokenInfoReturn {
   );
 
   return {
-    data,
-    isLoading,
+    tokenInfo: data || null,
+    isLoading: isLoading && !data,
     error: error || null,
   };
 }

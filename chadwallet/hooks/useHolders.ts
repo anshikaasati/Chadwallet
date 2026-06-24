@@ -4,7 +4,7 @@ import { Holder } from "@/types";
 import { INTERNAL_API, POLL_HOLDER_LIST_MS } from "@/constants";
 
 export interface UseHoldersReturn {
-  data: Holder[] | undefined;
+  holders: Holder[];
   isLoading: boolean;
   error: Error | null;
 }
@@ -25,8 +25,8 @@ export function useHolders(tokenAddress: string): UseHoldersReturn {
   );
 
   return {
-    data,
-    isLoading,
+    holders: data || [],
+    isLoading: isLoading && !data,
     error: error || null,
   };
 }

@@ -14,3 +14,7 @@ export * from "./Skeleton";
 
 export { default as Modal } from "./Modal";
 export * from "./Modal";
+
+export { default as ErrorBoundary } from "./ErrorBoundary";
+export * from "./ErrorBoundary";
+
