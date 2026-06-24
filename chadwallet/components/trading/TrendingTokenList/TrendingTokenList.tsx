@@ -81,12 +81,15 @@ export function TrendingTokenList({
             <button
               key={token.address}
               onClick={() => onSelectToken(token.address)}
-              className={`w-full text-left p-2.5 rounded-lg transition-all border flex justify-between items-center gap-3 ${
+              className={`w-full text-left p-2.5 rounded-lg transition-all duration-300 border flex justify-between items-center gap-3 relative overflow-hidden ${
                 isActive
-                  ? "bg-accent/15 border-accent text-text-primary"
-                  : "bg-bg-surface border-border/60 hover:bg-bg-surface/80 hover:border-border text-text-primary"
+                  ? "bg-accent/10 border-accent/60 text-text-primary shadow-lg shadow-accent/5 pl-3.5"
+                  : "bg-bg-surface/60 border-border/60 hover:bg-bg-surface/90 hover:border-border/80 hover:translate-x-0.5 text-text-primary"
               }`}
             >
+              {isActive && (
+                <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-accent" />
+              )}
               <div className="flex items-center gap-2.5 min-w-0">
                 <TokenLogo uri={token.logoUri} symbol={token.symbol} size={28} />
                 <div className="min-w-0">
@@ -99,6 +102,7 @@ export function TrendingTokenList({
                   {formatPrice(token.price)}
                 </div>
                 <div className={`text-xs font-bold ${token.priceChange24h >= 0 ? "text-buy" : "text-sell"}`}>
+                  {token.priceChange24h >= 0 ? "▲" : "▼"}{" "}
                   {formatPercent(token.priceChange24h)}
                 </div>
               </div>

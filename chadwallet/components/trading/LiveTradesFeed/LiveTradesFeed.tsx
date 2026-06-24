@@ -68,7 +68,10 @@ export function LiveTradesFeed({
   }
 
   return (
-    <div className="p-5 bg-bg-surface border border-border rounded-xl shadow-sm flex flex-col overflow-hidden">
+    <div className="p-5 bg-bg-surface/50 border border-border rounded-xl shadow-lg backdrop-blur-md flex flex-col overflow-hidden relative">
+      {/* Top border ambient glow */}
+      <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-accent/20 to-transparent" />
+      
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes trade-slide-in {
           from {
@@ -89,7 +92,7 @@ export function LiveTradesFeed({
       `}} />
 
       <div className="flex items-center justify-between mb-4 border-b border-border/40 pb-2.5">
-        <h3 className="font-extrabold text-sm uppercase tracking-wider text-text-muted">Live Trade Activity</h3>
+        <h3 className="font-extrabold text-xs uppercase tracking-wider text-text-muted">Live Trade Activity</h3>
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-buy animate-pulse" />
           <span className="text-[10px] font-bold text-buy uppercase">Real-Time</span>
@@ -99,16 +102,16 @@ export function LiveTradesFeed({
       <div className="overflow-x-auto max-h-[350px] overflow-y-auto pr-1">
         <table className="w-full text-left border-collapse text-xs">
           <thead>
-            <tr className="border-b border-border/60 text-text-muted font-bold sticky top-0 bg-bg-surface z-10">
-              <th className="py-2 pl-1">Time</th>
-              <th className="py-2">Type</th>
-              <th className="py-2 text-right">Price</th>
-              <th className="py-2 text-right">Amount</th>
-              <th className="py-2 text-right">Total USD</th>
-              <th className="py-2 pr-1 text-right">Maker</th>
+            <tr className="border-b border-border/60 text-text-muted font-bold text-[10px] uppercase tracking-wider sticky top-0 bg-bg-surface z-10">
+              <th className="py-2.5 pl-1">Time</th>
+              <th className="py-2.5">Type</th>
+              <th className="py-2.5 text-right">Price</th>
+              <th className="py-2.5 text-right">Amount</th>
+              <th className="py-2.5 text-right">Total USD</th>
+              <th className="py-2.5 pr-1 text-right">Maker</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-border/30">
+          <tbody className="divide-y divide-border/20">
             {trades.map((trade) => {
               const isBuy = trade.side === "buy";
               return (

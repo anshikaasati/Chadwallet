@@ -65,27 +65,32 @@ export function HoldersList({
   const topHolders = holders.slice(0, 20);
 
   return (
-    <div className="p-5 bg-bg-surface border border-border rounded-xl shadow-sm flex flex-col overflow-hidden">
+    <div className="p-5 bg-bg-surface/50 border border-border rounded-xl shadow-lg backdrop-blur-md flex flex-col overflow-hidden relative">
+      {/* Top border ambient glow */}
+      <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-accent/20 to-transparent" />
+      
       <div className="flex items-center justify-between mb-4 border-b border-border/40 pb-2.5">
-        <h3 className="font-extrabold text-sm uppercase tracking-wider text-text-muted">Top Holders (20)</h3>
-        <span className="text-xs font-bold text-text-muted px-2 py-0.5 rounded bg-bg-primary border border-border">
+        <h3 className="font-extrabold text-xs uppercase tracking-wider text-text-muted">Top Holders (20)</h3>
+        <span className="text-[10px] font-bold text-text-muted px-2 py-0.5 rounded bg-bg-primary border border-border">
           Solana Mainnet
         </span>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse text-xs">
           <thead>
-            <tr className="border-b border-border/60 text-text-muted font-bold">
+            <tr className="border-b border-border/60 text-text-muted font-bold text-[10px] uppercase tracking-wider">
               <th className="py-2.5 pl-1">Rank</th>
               <th className="py-2.5">Address</th>
               <th className="py-2.5 text-right">Balance</th>
               <th className="py-2.5 pr-1 text-right">Share</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-border/30">
+          <tbody className="divide-y divide-border/20">
             {topHolders.map((holder, idx) => (
               <tr key={holder.address} className="hover:bg-bg-primary/40 transition-colors">
-                <td className="py-2.5 pl-1 font-semibold text-text-muted">#{idx + 1}</td>
+                <td className="py-2.5 pl-1 font-semibold text-text-muted">
+                  {idx === 0 ? "🥇 #1" : idx === 1 ? "🥈 #2" : idx === 2 ? "🥉 #3" : `#${idx + 1}`}
+                </td>
                 <td className="py-2.5 font-mono">
                   <a
                     href={`https://solscan.io/account/${holder.address}`}

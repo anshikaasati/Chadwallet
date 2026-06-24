@@ -30,6 +30,7 @@ export function SwapPanel({
   const [amount, setAmount] = useState<string>("");
   const [slippagePreset, setSlippagePreset] = useState<number | "custom">(DEFAULT_SLIPPAGE_BPS);
   const [customSlippage, setCustomSlippage] = useState<string>("");
+  const [isFocused, setIsFocused] = useState(false);
 
   const isSol = tokenAddress === SOL_MINT;
   const inputMint = side === "buy" ? (isSol ? USDC_MINT : SOL_MINT) : tokenAddress;
@@ -145,8 +146,10 @@ export function SwapPanel({
 
       <form onSubmit={handleSwapSubmit} className="flex flex-col gap-4">
         {/* Input Card */}
-        <div className="bg-bg-primary border border-border p-4 rounded-xl flex flex-col gap-1.5">
-          <div className="flex justify-between items-center text-xs font-bold text-text-muted uppercase tracking-wider">
+        <div className={`bg-bg-primary border p-4 rounded-xl flex flex-col gap-1.5 transition-all duration-300 ${
+          isFocused ? "border-accent shadow-md shadow-accent/5" : "border-border"
+        }`}>
+          <div className="flex justify-between items-center text-[10px] font-bold text-text-muted uppercase tracking-wider">
             <span>You Pay</span>
             <span>Asset: {inputSymbol}</span>
           </div>
@@ -158,6 +161,8 @@ export function SwapPanel({
               placeholder="0.00"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
               disabled={isExecuting}
               className="bg-transparent border-0 outline-none text-xl font-extrabold font-mono text-text-primary placeholder:text-text-muted/40 w-full p-0 focus:ring-0"
               required
@@ -275,7 +280,7 @@ export function SwapPanel({
           <Button
             type="button"
             onClick={login}
-            className="w-full py-3 font-extrabold bg-accent text-text-primary rounded-xl text-sm"
+            className="w-full py-3 font-extrabold bg-accent hover:bg-accent/90 text-text-primary rounded-xl text-sm shadow-md shadow-accent/15 hover:shadow-accent/25 active:scale-[0.98] transition-all"
           >
             Sign in to trade
           </Button>
@@ -300,12 +305,12 @@ export function SwapPanel({
           <Button
             type="submit"
             disabled={!quote || isQuoteLoading || priceImpact >= 5}
-            className={`w-full py-3 font-extrabold rounded-xl text-sm text-text-primary ${
+            className={`w-full py-3 font-black rounded-xl text-sm text-text-primary uppercase tracking-wider active:scale-[0.98] transition-all border-0 ${
               priceImpact >= 5
                 ? "bg-border/60 text-text-muted cursor-not-allowed"
                 : side === "buy"
-                ? "bg-buy hover:bg-buy/90"
-                : "bg-sell hover:bg-sell/90"
+                ? "bg-gradient-to-r from-buy to-emerald-600 hover:from-emerald-500 hover:to-emerald-600 shadow-lg shadow-buy/15 hover:shadow-buy/25"
+                : "bg-gradient-to-r from-sell to-rose-600 hover:from-rose-500 hover:to-rose-600 shadow-lg shadow-sell/15 hover:shadow-sell/25"
             }`}
           >
             {priceImpact >= 5
