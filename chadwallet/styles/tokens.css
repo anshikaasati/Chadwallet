@@ -3,6 +3,9 @@
   --color-bg-primary: #0a0a0f;
   --color-bg-surface: #12121a;
   --color-accent: #7c3aed;
+  --color-accent-dim: rgba(124, 58, 237, 0.12);
+  --color-accent-glow: rgba(124, 58, 237, 0.35);
+  --color-accent-light: #a78bfa;
   --color-buy: #22c55e;
   --color-sell: #ef4444;
   --color-text-primary: #f8fafc;

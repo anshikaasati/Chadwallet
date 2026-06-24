@@ -3,40 +3,61 @@ import React from "react";
 import Image from "next/image";
 import SignInButton from "@/components/landing/SignInButton";
 import AppDownloadCTA from "@/components/landing/AppDownloadCTA";
+import MockTradingTerminal from "./MockTradingTerminal";
 
 export function HeroSection(): React.JSX.Element {
   return (
-    <section className="relative flex flex-col items-center justify-center text-center min-h-[calc(100vh-112px)] py-12 px-4 select-none overflow-hidden">
+    <section className="relative flex flex-col items-center justify-center min-h-[calc(100vh-120px)] w-full py-16 px-6 select-none overflow-hidden grid-bg">
       {/* Background Radial Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[600px] md:h-[600px] rounded-full bg-accent opacity-[0.07] blur-[100px] pointer-events-none z-0" />
+      <div className="absolute top-[30%] left-[50%] w-[500px] h-[500px] md:w-[800px] md:h-[800px] rounded-full bg-accent opacity-[0.06] blur-[120px] pointer-events-none z-0 animate-pulse-glow" />
+      <div className="absolute top-[70%] left-[20%] w-[350px] h-[350px] rounded-full bg-buy opacity-[0.03] blur-[100px] pointer-events-none z-0" />
 
-      {/* Logo container with ambient backdrop glow */}
-      <div className="relative mb-6 z-10">
-        <div className="absolute inset-0 bg-accent rounded-full opacity-[0.12] blur-md filter scale-105 pointer-events-none" />
-        <Image
-          src="/logo/dark.png"
-          alt="ChadWallet Logo"
-          width={120}
-          height={120}
-          className="relative drop-shadow-[0_0_15px_rgba(124,58,237,0.35)] transition-all duration-300"
-          priority
-        />
-      </div>
+      {/* Main Grid Content */}
+      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center z-10 relative">
+        
+        {/* Left Column: Typography and CTAs */}
+        <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left">
+          
+          {/* Version/Beta Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-dim border border-accent/20 text-xs font-bold text-accent-light mb-6">
+            <span className="w-2 h-2 rounded-full bg-buy animate-pulse" />
+            ChadWallet DEX Terminal v1.0.0
+          </div>
 
-      {/* Typography */}
-      <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-4 tracking-tight leading-tight max-w-4xl z-10">
-        Trade Solana Tokens. <span className="text-accent">Live.</span>
-      </h1>
-      <p className="text-base md:text-lg text-text-muted max-w-2xl mb-10 z-10 leading-relaxed font-medium">
-        Instantly track, monitor, and execute Solana swaps with real-time analytics and Privy-powered security.
-      </p>
+          {/* Typography */}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 tracking-tight leading-[1.08] max-w-2xl">
+            Trade Solana Tokens.{" "}
+            <span className="bg-gradient-to-r from-accent via-accent-light to-fuchsia-400 bg-clip-text text-transparent">
+              Live.
+            </span>
+          </h1>
 
-      {/* Interaction Blocks */}
-      <div className="flex flex-col gap-8 items-center justify-center w-full z-10">
-        <SignInButton />
-        <AppDownloadCTA />
+          <p className="text-sm sm:text-base md:text-lg text-text-muted max-w-xl mb-8 leading-relaxed font-medium">
+            The ultimate high-performance trading wallet. Execute split-second swaps via Jupiter Routing, track real-time analytics, and secure your assets with Privy-powered social keys.
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-col items-center lg:items-start gap-8 w-full">
+            <div className="w-full sm:w-auto">
+              <SignInButton />
+            </div>
+            
+            <div className="border-t border-border/50 pt-6 w-full max-w-md flex flex-col items-center lg:items-start">
+              <AppDownloadCTA />
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Interactive Mock Terminal */}
+        <div className="lg:col-span-5 w-full flex justify-center items-center animate-float">
+          <div className="w-full max-w-[460px] lg:max-w-none">
+            <MockTradingTerminal />
+          </div>
+        </div>
+
       </div>
     </section>
   );
 }
+
 export default HeroSection;

@@ -1,6 +1,6 @@
 # ChadWallet — Premium Solana DEX & Portfolio Terminal
 
-ChadWallet is a high-performance, recruiter-grade Solana DEX trading interface and real-time portfolio terminal. Modeled after the vibrant and high-urgency aesthetic of `fomo.family`, it features live token tickers, advanced price charting, and a secure server-assembled swap execution flow.
+ChadWallet is a high-performance, premium-grade Solana DEX trading interface and real-time portfolio terminal. Modeled after the vibrant and high-urgency aesthetic of `fomo.family`, it features live token tickers, advanced price charting, and a secure server-assembled swap execution flow.
 
 Built using **Next.js 14 (App Router)**, **TypeScript (Strict)**, and **Tailwind CSS (CSS variables configuration)**, ChadWallet delegates sensitive network calls to Next.js server-side proxies, uses **SWR** for real-time polling, and secures user positions via **Supabase RLS**. Auth is powered by **Privy**, offering seamless Google/Apple social sign-ins alongside instant Web3 Solana embedded wallet generation.
 
