@@ -4,14 +4,13 @@ import { Token } from "@/types";
 import { INTERNAL_API, POLL_BANNER_MS } from "@/constants";
 
 export interface UseTokenBannerReturn {
-  data: Token[] | undefined;
+  tokens: Token[];
   isLoading: boolean;
   error: Error | null;
-  mutate: () => Promise<Token[] | undefined>;
 }
 
-export function useTokenBanner(): UseTokenBannerReturn {
-  const { data, error, isLoading, mutate } = useSWR<Token[]>(
+export function useTokenBanner(fallbackData?: Token[]): UseTokenBannerReturn {
+  const { data, error, isLoading } = useSWR<Token[]>(
     INTERNAL_API.banner,
     async (url: string) => {
       const res = await fetch(url);
@@ -22,14 +21,14 @@ export function useTokenBanner(): UseTokenBannerReturn {
     {
       refreshInterval: POLL_BANNER_MS,
       dedupingInterval: POLL_BANNER_MS,
+      fallbackData,
     }
   );
 
   return {
-    data,
-    isLoading,
+    tokens: data || fallbackData || [],
+    isLoading: isLoading && !data && !fallbackData,
     error: error || null,
-    mutate,
   };
 }
 export default useTokenBanner;

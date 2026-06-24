@@ -5,48 +5,46 @@ import React, { useState } from "react";
 import Image from "next/image";
 
 export interface TokenLogoProps {
-  logoUri: string | null;
+  uri: string | null;
   symbol: string;
   size?: number;
 }
 
 export function TokenLogo({
-  logoUri,
+  uri,
   symbol,
-  size = 24,
+  size = 32,
 }: TokenLogoProps): React.JSX.Element {
   const [error, setError] = useState(false);
 
-  const fallbackSvg = (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="text-text-muted bg-bg-surface rounded-full p-1 border border-border"
+  const firstLetter = symbol ? symbol.charAt(0).toUpperCase() : "?";
+
+  const fallback = (
+    <div
+      style={{
+        width: size,
+        height: size,
+        fontSize: size * 0.45,
+      }}
+      className="flex items-center justify-center rounded-full font-bold select-none bg-accent bg-opacity-20 text-accent border border-accent border-opacity-35"
     >
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 6v12M8 10h8M8 14h8" />
-    </svg>
+      {firstLetter}
+    </div>
   );
 
-  if (!logoUri || error) {
-    return fallbackSvg;
+  if (!uri || error) {
+    return fallback;
   }
 
   return (
     <Image
-      src={logoUri}
+      src={uri}
       alt={`${symbol} logo`}
       width={size}
       height={size}
       className="rounded-full object-cover"
       onError={() => setError(true)}
-      unoptimized // SWR/BirdEye logos might be external, unoptimized allows bypass of domain config if needed
+      unoptimized
     />
   );
 }

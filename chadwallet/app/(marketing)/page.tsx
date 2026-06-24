@@ -1,58 +1,41 @@
 // app/(marketing)/page.tsx
-"use client";
-
 import React from "react";
-import { useRouter } from "next/navigation";
-import { HeroSection, TokenBanner, AppDownloadCTA, SignInButton } from "@/components/landing";
+import HeroSection from "@/components/landing/HeroSection";
+import TokenBanner from "@/components/landing/TokenBanner";
+import { birdeye } from "@/services";
 import { Token } from "@/types";
 
-export default function LandingPage(): React.JSX.Element {
-  const router = useRouter();
+export const revalidate = 15; // 15s ISR cache
 
-  // Stub data for initial compilation (will pull real SWR data in implementation phase)
-  const dummyTokens: Token[] = [
-    {
-      address: "So11111111111111111111111111111111111111112",
-      symbol: "SOL",
-      name: "Solana",
-      logoUri: null,
-      decimals: 9,
-      price: 150.0,
-      priceChange24h: 5.25,
-      volume24h: 120000000,
-      marketCap: 70000000000,
-      liquidity: 15000000,
-      chain: "solana",
-    },
-    {
-      address: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-      symbol: "USDC",
-      name: "USD Coin",
-      logoUri: null,
-      decimals: 6,
-      price: 1.0,
-      priceChange24h: 0.01,
-      volume24h: 90000000,
-      marketCap: 25000000000,
-      liquidity: 50000000,
-      chain: "solana",
-    },
-  ];
+async function getInitialBannerTokens(): Promise<Token[]> {
+  try {
+    const tokens = await birdeye.getBannerTokens();
+    return tokens;
+  } catch (err) {
+    console.error("Failed to pre-fetch banner tokens on server side:", err);
+    return [];
+  }
+}
 
-  const handleSignIn = () => {
-    // TODO: Connect Privy login callback, on success route to trade page
-    router.push("/trade/So11111111111111111111111111111111111111112");
-  };
+export default async function LandingPage(): Promise<React.JSX.Element> {
+  const initialTokens = await getInitialBannerTokens();
 
   return (
-    <div className="w-full max-w-6xl px-4 py-8 flex flex-col gap-12 items-center">
-      <TokenBanner tokens={dummyTokens} direction="left" />
-      <HeroSection onSignInClick={handleSignIn} />
-      <div className="flex flex-col sm:flex-row gap-8 w-full justify-center items-center">
-        <SignInButton onClick={handleSignIn} />
-        <AppDownloadCTA />
+    <div className="relative flex flex-col min-h-screen w-full bg-bg-primary overflow-hidden justify-between">
+      {/* Top sticky banner */}
+      <div className="sticky top-0 z-50 w-full">
+        <TokenBanner direction="left" initialTokens={initialTokens} />
       </div>
-      <TokenBanner tokens={dummyTokens} direction="right" />
+
+      {/* Hero section floats in the middle */}
+      <main className="flex-1 flex flex-col justify-center items-center z-10">
+        <HeroSection />
+      </main>
+
+      {/* Bottom sticky banner */}
+      <div className="sticky bottom-0 z-50 w-full">
+        <TokenBanner direction="right" initialTokens={initialTokens} />
+      </div>
     </div>
   );
 }

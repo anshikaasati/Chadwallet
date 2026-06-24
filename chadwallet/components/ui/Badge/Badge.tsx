@@ -2,7 +2,7 @@
 import React from "react";
 
 export interface BadgeProps {
-  variant?: "success" | "danger" | "neutral";
+  variant?: "positive" | "negative" | "neutral";
   children: React.ReactNode;
   className?: string;
 }
@@ -12,10 +12,10 @@ export function Badge({
   children,
   className = "",
 }: BadgeProps): React.JSX.Element {
-  const baseStyle = "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold";
+  const baseStyle = "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold select-none";
   const variantStyles = {
-    success: "bg-buy bg-opacity-20 text-buy",
-    danger: "bg-sell bg-opacity-20 text-sell",
+    positive: "bg-buy bg-opacity-15 text-buy",
+    negative: "bg-sell bg-opacity-15 text-sell",
     neutral: "bg-bg-surface text-text-muted border border-border",
   };
 

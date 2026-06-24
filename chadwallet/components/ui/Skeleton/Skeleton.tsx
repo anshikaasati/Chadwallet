@@ -7,7 +7,7 @@ export interface SkeletonProps {
 
 export function Skeleton({ className = "" }: SkeletonProps): React.JSX.Element {
   return (
-    <div className={`animate-pulse bg-bg-surface rounded-md ${className}`} />
+    <div className={`shimmer-bg rounded-md ${className}`} />
   );
 }
 export default Skeleton;

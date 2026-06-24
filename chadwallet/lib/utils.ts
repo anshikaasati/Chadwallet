@@ -37,3 +37,22 @@ export function formatPrice(price: number): string {
   }
   return `$${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
+
+/**
+ * Formats a large number into an abbreviated representation (e.g. 1.2M, 34.5B).
+ */
+export function formatNumberAbbreviated(val: number | null | undefined): string {
+  if (val === null || val === undefined || isNaN(val)) {
+    return "N/A";
+  }
+  if (val >= 1_000_000_000) {
+    return `${(val / 1_000_000_000).toFixed(1)}B`;
+  }
+  if (val >= 1_000_000) {
+    return `${(val / 1_000_000).toFixed(1)}M`;
+  }
+  if (val >= 1_000) {
+    return `${(val / 1_000).toFixed(1)}K`;
+  }
+  return val.toLocaleString(undefined, { maximumFractionDigits: 2 });
+}

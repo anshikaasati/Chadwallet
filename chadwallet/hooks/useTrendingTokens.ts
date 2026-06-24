@@ -4,7 +4,7 @@ import { Token } from "@/types";
 import { INTERNAL_API, POLL_TRENDING_MS } from "@/constants";
 
 export interface UseTrendingTokensReturn {
-  data: Token[] | undefined;
+  tokens: Token[];
   isLoading: boolean;
   error: Error | null;
 }
@@ -25,8 +25,8 @@ export function useTrendingTokens(): UseTrendingTokensReturn {
   );
 
   return {
-    data,
-    isLoading,
+    tokens: data || [],
+    isLoading: isLoading && !data,
     error: error || null,
   };
 }

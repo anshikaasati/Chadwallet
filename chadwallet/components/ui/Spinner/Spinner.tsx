@@ -10,19 +10,43 @@ export function Spinner({
   size = "md",
   className = "",
 }: SpinnerProps): React.JSX.Element {
-  const sizeClasses = {
-    sm: "w-4 h-4 border-2",
-    md: "w-8 h-8 border-3",
-    lg: "w-12 h-12 border-4",
+  const sizeMap = {
+    sm: 16,
+    md: 32,
+    lg: 48,
   };
 
+  const px = sizeMap[size];
+
   return (
-    <div
-      className={`animate-spin rounded-full border-t-accent border-r-transparent border-b-transparent border-l-transparent ${sizeClasses[size]} ${className}`}
+    <svg
+      className={`animate-spin ${className}`}
+      width={px}
+      height={px}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
       role="status"
     >
+      <circle
+        className="opacity-20"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="3"
+      />
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="var(--color-accent)"
+        strokeWidth="3"
+        strokeDasharray="40 100"
+        strokeLinecap="round"
+      />
       <span className="sr-only">Loading...</span>
-    </div>
+    </svg>
   );
 }
 export default Spinner;
