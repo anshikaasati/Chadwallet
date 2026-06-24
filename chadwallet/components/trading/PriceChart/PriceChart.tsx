@@ -157,7 +157,11 @@ export function PriceChart({ tokenAddress }: PriceChartProps): React.JSX.Element
     return () => {
       isMounted = false;
       if (activeWidget && typeof activeWidget.remove === "function") {
-        activeWidget.remove();
+        try {
+          activeWidget.remove();
+        } catch (err) {
+          console.warn("Failed to remove TradingView widget safely:", err);
+        }
       }
     };
   }, [tokenAddress, containerId]);
