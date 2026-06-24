@@ -25,7 +25,7 @@ export class JupiterService {
       const data = await apiFetch<QuoteResponse>(url.toString());
 
       if (!data || !data.routePlan || data.routePlan.length === 0) {
-        throw new JupiterError("No swap routes found for the selected tokens.");
+        throw new JupiterError("NO_ROUTE_FOUND", "No swap routes found for the selected tokens.", 422);
       }
 
       return {
@@ -50,7 +50,7 @@ export class JupiterService {
    * Assembles a serialized Solana transaction for signing and broadcasting.
    * Calls Jupiter v6 POST swap transaction endpoint.
    */
-  async assembleTransaction(req: SwapTransactionRequest): Promise<SwapTransactionResponse> {
+  async buildTransaction(req: SwapTransactionRequest): Promise<SwapTransactionResponse> {
     try {
       const body = {
         quoteResponse: req.quoteResponse,

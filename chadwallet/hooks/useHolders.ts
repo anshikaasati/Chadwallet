@@ -19,8 +19,8 @@ export function useHolders(tokenAddress: string): UseHoldersReturn {
       return json.data;
     },
     {
-      refreshInterval: POLL_HOLDER_LIST_MS,
-      dedupingInterval: POLL_HOLDER_LIST_MS,
+      refreshInterval: POLL_HOLDER_LIST_MS || undefined,
+      dedupingInterval: 10_000,
     }
   );
 

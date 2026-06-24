@@ -22,8 +22,8 @@ export function useLiveTrades(tokenAddress: string): UseLiveTradesReturn {
       return json.data;
     },
     {
-      refreshInterval: POLL_LIVE_TRADES_MS,
-      dedupingInterval: POLL_LIVE_TRADES_MS,
+      refreshInterval: POLL_LIVE_TRADES_MS || undefined,
+      dedupingInterval: 10_000,
       onSuccess: (newData) => {
         setTrades((prev) => {
           if (prev.length === 0) return newData.slice(0, 50);

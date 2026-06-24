@@ -19,8 +19,8 @@ export function useTokenBanner(fallbackData?: Token[]): UseTokenBannerReturn {
       return json.data;
     },
     {
-      refreshInterval: POLL_BANNER_MS,
-      dedupingInterval: POLL_BANNER_MS,
+      refreshInterval: POLL_BANNER_MS || undefined,
+      dedupingInterval: 30_000,
       fallbackData,
     }
   );

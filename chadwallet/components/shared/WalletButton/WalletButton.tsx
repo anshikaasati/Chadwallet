@@ -3,15 +3,14 @@
 
 import React from "react";
 import { usePrivy } from "@privy-io/react-auth";
-import { useWallet } from "@/hooks/useWallet";
+import { abbreviateAddress } from "@/lib/utils";
+import { useWallet } from "@/hooks";
 
 export function WalletButton(): React.JSX.Element {
   const { ready, authenticated, login, logout } = usePrivy();
   const { publicKey } = useWallet();
 
-  const abbreviatedAddress = publicKey
-    ? `${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`
-    : "";
+  const abbreviatedAddress = publicKey ? abbreviateAddress(publicKey) : "";
 
   const handleWalletClick = (): void => {
     if (authenticated) {

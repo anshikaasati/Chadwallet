@@ -2,15 +2,15 @@
 import React from "react";
 import Badge from "@/components/ui/Badge";
 
+import { formatPercent } from "@/lib/utils";
+
 export interface PriceChangeProps {
   value: number;
-  showSign?: boolean;
   className?: string;
 }
 
 export function PriceChange({
   value,
-  showSign = true,
   className = "",
 }: PriceChangeProps): React.JSX.Element {
   const isPositive = value > 0;
@@ -23,9 +23,7 @@ export function PriceChange({
     variant = "negative";
   }
 
-  const absoluteValue = Math.abs(value).toFixed(2);
-  const sign = isPositive && showSign ? "+" : isNegative ? "-" : "";
-  const formattedValue = `${sign}${absoluteValue}%`;
+  const formattedValue = formatPercent(value);
 
   return (
     <Badge variant={variant} className={className}>

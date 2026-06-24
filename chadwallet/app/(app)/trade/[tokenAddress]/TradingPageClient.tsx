@@ -18,9 +18,18 @@ import {
   PriceChart,
   HoldersList,
   LiveTradesFeed,
-  SwapPanel,
   UserPosition,
 } from "@/components/trading";
+import dynamic from "next/dynamic";
+
+const SwapPanel = dynamic(() => import("@/components/trading/SwapPanel/SwapPanel"), {
+  ssr: false,
+  loading: () => (
+    <div className="p-5 bg-bg-surface border border-border rounded-xl shadow-sm flex items-center justify-center h-48">
+      <div className="text-text-muted text-sm font-semibold">Loading Swap Panel...</div>
+    </div>
+  ),
+});
 
 interface TradingPageClientProps {
   tokenAddress: string;

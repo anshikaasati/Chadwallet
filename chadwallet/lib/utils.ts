@@ -89,13 +89,13 @@ export function formatNumberAbbreviated(val: number | null | undefined): string 
 }
 
 /**
- * Formats percent yield change with sign always shown.
+ * Formats percent yield change with sign optionally shown (defaults to always showing).
  */
-export function formatPercent(n: number): string {
+export function formatPercent(n: number, showSign: boolean = true): string {
   if (n === null || n === undefined || isNaN(n)) {
     return "0.00%";
   }
-  const prefix = n >= 0 ? "+" : "";
+  const prefix = showSign && n >= 0 ? "+" : "";
   return `${prefix}${n.toFixed(2)}%`;
 }
 

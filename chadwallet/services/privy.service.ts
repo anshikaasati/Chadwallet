@@ -5,6 +5,31 @@ import { ApiError } from "@/lib/errors";
 
 export class PrivyService {
   /**
+   * Extracts and verifies the Privy JWT token from the Authorization request header.
+   * Throws a 401 ApiError if missing, invalid, or expired.
+   */
+  async getAuthFromRequest(req: {
+    headers: { get(name: string): string | null };
+  }): Promise<{ userId: string; walletAddress: string | null }> {
+    const authHeader = req.headers.get("Authorization");
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      throw new ApiError(
+        "UNAUTHORIZED",
+        "Missing or invalid Authorization Bearer token header.",
+        401
+      );
+    }
+
+    const token = authHeader.substring(7).trim();
+    if (!token) {
+      throw new ApiError("UNAUTHORIZED", "Empty session authorization token.", 401);
+    }
+
+    return this.verifyAuthToken(token);
+  }
+
+  /**
    * Verifies a Privy authorization token (JWT claims) and loads the full user
    * profile to find any linked Solana wallets.
    */

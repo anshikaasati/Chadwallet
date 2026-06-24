@@ -3,7 +3,7 @@
 
 import React, { useEffect, useId } from "react";
 import { createDatafeed } from "@/lib/tradingview/datafeed";
-import { SOL_MINT } from "@/constants";
+import { SOL_MINT, USE_LOCAL_TRADINGVIEW } from "@/constants";
 
 export interface PriceChartProps {
   tokenAddress: string;
@@ -116,26 +116,40 @@ export function PriceChart({ tokenAddress }: PriceChartProps): React.JSX.Element
     };
 
     const tryLocalThenCDN = (): void => {
+      const useLocal = USE_LOCAL_TRADINGVIEW;
       const localSrc = "/tradingview/charting_library/charting_library.js";
-      loadScript(
-        localSrc,
-        () => {
-          initChart(localSrc);
-        },
-        () => {
-          console.warn("Advanced Charting Library script not found, falling back to tv.js CDN");
-          const cdnSrc = "https://s3.tradingview.com/tv.js";
-          loadScript(
-            cdnSrc,
-            () => {
-              initChart(cdnSrc);
-            },
-            () => {
-              console.error("Failed to load both TradingView charting libraries");
-            }
-          );
-        }
-      );
+      const cdnSrc = "https://s3.tradingview.com/tv.js";
+
+      if (useLocal) {
+        loadScript(
+          localSrc,
+          () => {
+            initChart(localSrc);
+          },
+          () => {
+            console.warn("Advanced Charting Library script not found, falling back to tv.js CDN");
+            loadScript(
+              cdnSrc,
+              () => {
+                initChart(cdnSrc);
+              },
+              () => {
+                console.error("Failed to load both TradingView charting libraries");
+              }
+            );
+          }
+        );
+      } else {
+        loadScript(
+          cdnSrc,
+          () => {
+            initChart(cdnSrc);
+          },
+          () => {
+            console.error("Failed to load TradingView charting library from CDN");
+          }
+        );
+      }
     };
 
     tryLocalThenCDN();

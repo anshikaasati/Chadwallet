@@ -3,7 +3,7 @@
 
 import React from "react";
 import { Holder } from "@/types";
-import { formatAddress, formatNumberAbbreviated } from "@/lib/utils";
+import { formatAddress, formatNumberAbbreviated, formatPercent } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/Skeleton/Skeleton";
 import { Button } from "@/components/ui/Button/Button";
 
@@ -101,7 +101,7 @@ export function HoldersList({
                   {formatNumberAbbreviated(holder.amount)}
                 </td>
                 <td className="py-2.5 pr-1 text-right font-mono font-bold text-accent">
-                  {holder.percentage.toFixed(2)}%
+                  {formatPercent(holder.percentage, false)}
                 </td>
               </tr>
             ))}

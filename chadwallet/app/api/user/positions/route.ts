@@ -1,13 +1,12 @@
 // app/api/user/positions/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { PositionSchema } from "@/types";
-import { supabaseService } from "@/services";
+import { supabaseService, privyService } from "@/services";
 import { ApiError, handleApiError } from "@/lib/errors";
-import { getAuthFromRequest } from "@/lib/auth";
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
-    const auth = await getAuthFromRequest(request);
+    const auth = await privyService.getAuthFromRequest(request);
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId") || auth.userId;
 
@@ -28,21 +27,16 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
-    const auth = await getAuthFromRequest(request);
+    const auth = await privyService.getAuthFromRequest(request);
 
     const body = await request.json();
     const result = PositionSchema.safeParse(body);
 
     if (!result.success) {
-      return NextResponse.json(
-        {
-          error: {
-            code: "VALIDATION_ERROR",
-            message: "Invalid user position details.",
-            details: result.error.format(),
-          },
-        },
-        { status: 400 }
+      throw new ApiError(
+        "VALIDATION_ERROR",
+        "Invalid user position details.",
+        422
       );
     }
 

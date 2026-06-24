@@ -81,7 +81,7 @@ Follow these commands to install dependencies, configure secrets, and launch the
 
 ## 4. Environment Variables Reference
 
-Refer to [.env.example](file:///c:/Users/asati/OneDrive/Desktop/Chadwallet/chadwallet/.env.example) for key formats.
+Refer to [chadwallet/.env.example](file:///c:/Users/asati/OneDrive/Desktop/Chadwallet/chadwallet/.env.example) for key formats.
 
 | Variable Name | Description | Status | Scope |
 | :--- | :--- | :--- | :--- |

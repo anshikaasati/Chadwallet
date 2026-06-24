@@ -12,11 +12,17 @@ export function SignInButton(): React.JSX.Element {
   const [isSyncing, setIsSyncing] = useState(false);
   const router = useRouter();
 
+
+
   useEffect(() => {
     let active = true;
     if (ready && authenticated && user && !isSyncing) {
+      setIsSyncing(true);
+      
+      // Redirect immediately to keep the UI highly responsive
+      router.push(`/trade/${SOL_MINT}`);
+
       const syncAndRedirect = async () => {
-        setIsSyncing(true);
         try {
           const solanaWallet = user.linkedAccounts.find((acc) => {
             if (acc.type !== "wallet") return false;
@@ -33,28 +39,40 @@ export function SignInButton(): React.JSX.Element {
           const emailAccount = user.linkedAccounts.find((acc) => acc.type === "email");
           const email = emailAccount ? (emailAccount as unknown as { address: string }).address : null;
 
-          const token = await getAccessToken();
+          // Race getAccessToken with a 3-second timeout to prevent hangs
+          const tokenPromise = getAccessToken();
+          const timeoutPromise = new Promise<null>((_, reject) =>
+            setTimeout(() => reject(new Error("getAccessToken timeout")), 3000)
+          );
+
+          const token = await Promise.race([tokenPromise, timeoutPromise]);
           if (token && active) {
-            await fetch("/api/user/upsert", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify({
-                id: user.id,
-                walletAddress,
-                email,
-                createdAt: new Date(user.createdAt).toISOString(),
-              }),
-            });
+            const controller = new AbortController();
+            const fetchTimeoutId = setTimeout(() => controller.abort(), 4000);
+
+            try {
+              await fetch("/api/user/upsert", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                  id: user.id,
+                  walletAddress,
+                  email,
+                  createdAt: new Date(user.createdAt).toISOString(),
+                }),
+                signal: controller.signal,
+              });
+            } catch (fetchErr) {
+              console.warn("User upsert sync timed out or was aborted:", fetchErr);
+            } finally {
+              clearTimeout(fetchTimeoutId);
+            }
           }
         } catch (err) {
-          console.error("Failed to sync user session:", err);
-        } finally {
-          if (active) {
-            router.push(`/trade/${SOL_MINT}`);
-          }
+          console.warn("Background user sync timed out or failed:", err);
         }
       };
       syncAndRedirect();

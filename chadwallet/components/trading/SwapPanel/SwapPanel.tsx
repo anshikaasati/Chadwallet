@@ -277,7 +277,7 @@ export function SwapPanel({
             onClick={login}
             className="w-full py-3 font-extrabold bg-accent text-text-primary rounded-xl text-sm"
           >
-            Connect Wallet to Trade
+            Sign in to trade
           </Button>
         ) : isExecuting ? (
           <div className="flex flex-col items-center justify-center p-3 bg-bg-primary border border-border rounded-xl gap-2 text-center text-xs">
@@ -299,12 +299,18 @@ export function SwapPanel({
         ) : (
           <Button
             type="submit"
-            disabled={!quote || isQuoteLoading}
+            disabled={!quote || isQuoteLoading || priceImpact >= 5}
             className={`w-full py-3 font-extrabold rounded-xl text-sm text-text-primary ${
-              side === "buy" ? "bg-buy hover:bg-buy/90" : "bg-sell hover:bg-sell/90"
+              priceImpact >= 5
+                ? "bg-border/60 text-text-muted cursor-not-allowed"
+                : side === "buy"
+                ? "bg-buy hover:bg-buy/90"
+                : "bg-sell hover:bg-sell/90"
             }`}
           >
-            Confirm {side === "buy" ? "Buy" : "Sell"} {tokenSymbol}
+            {priceImpact >= 5
+              ? "Price Impact Too High"
+              : `Confirm ${side === "buy" ? "Buy" : "Sell"} ${tokenSymbol}`}
           </Button>
         )}
 

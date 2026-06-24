@@ -1,7 +1,9 @@
 // lib/privy/client.ts
 import type { PrivyProviderProps } from "@privy-io/react-auth";
 
-export const privyAppId = process.env.NEXT_PUBLIC_PRIVY_APP_ID || "";
+import { NEXT_PUBLIC_PRIVY_APP_ID } from "@/constants";
+
+export const privyAppId = NEXT_PUBLIC_PRIVY_APP_ID;
 
 export const privyConfig: PrivyProviderProps["config"] = {
   appearance: {

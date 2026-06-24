@@ -31,6 +31,8 @@ export interface BirdEyeTokenOverview {
   tradeHistory24h?: number;
   uniqueWallet24h?: number;
   uniqueWalletHistory24h?: number;
+  totalSupply?: number;
+  circulatingSupply?: number;
 }
 
 export interface BirdEyeTrendingToken {
@@ -67,10 +69,11 @@ export interface BirdEyeOHLCVResponse {
 
 export interface BirdEyeHolder {
   owner: string;
-  amount: number;
-  uiAmount: number;
-  percentage: number;
-  rank: number;
+  amount: string;
+  decimals: number;
+  mint: string;
+  token_account?: string;
+  ui_amount: number;
 }
 
 export interface BirdEyeHolderResponse {

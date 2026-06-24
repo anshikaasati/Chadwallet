@@ -1,5 +1,24 @@
-// services/http.client.ts
 import { ApiError, NetworkError } from "@/lib/errors";
+
+let lastRequestTime = 0;
+const MIN_REQUEST_INTERVAL_MS = 1100; // Spaced by ~1.1 seconds to avoid 1 RPS rate limit
+
+async function throttle(): Promise<void> {
+  const now = Date.now();
+  if (lastRequestTime === 0) {
+    lastRequestTime = now;
+    return;
+  }
+  const timeSinceLastRequest = now - lastRequestTime;
+  const timeToWait = MIN_REQUEST_INTERVAL_MS - timeSinceLastRequest;
+
+  if (timeToWait > 0) {
+    lastRequestTime = now + timeToWait;
+    await new Promise((resolve) => setTimeout(resolve, timeToWait));
+  } else {
+    lastRequestTime = now;
+  }
+}
 
 export async function apiFetch<T>(url: string, options?: RequestInit): Promise<T> {
   const maxRetries = 3;
@@ -7,6 +26,7 @@ export async function apiFetch<T>(url: string, options?: RequestInit): Promise<T
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
+      await throttle();
       const response = await fetch(url, options);
 
       if (response.status === 429 && attempt < maxRetries) {

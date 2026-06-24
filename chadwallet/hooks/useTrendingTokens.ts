@@ -19,8 +19,8 @@ export function useTrendingTokens(): UseTrendingTokensReturn {
       return json.data;
     },
     {
-      refreshInterval: POLL_TRENDING_MS,
-      dedupingInterval: POLL_TRENDING_MS,
+      refreshInterval: POLL_TRENDING_MS || undefined,
+      dedupingInterval: 30_000,
     }
   );
 

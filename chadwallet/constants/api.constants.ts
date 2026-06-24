@@ -11,7 +11,7 @@ export const BIRDEYE_ENDPOINTS = {
   tokenOverview: "/defi/token_overview",
   tokenTrending: "/defi/token_trending",
   ohlcv: "/defi/ohlcv",
-  tokenHolder: "/v1/token/holder",
+  tokenHolder: "/defi/v3/token/holder",
   tokenTrades: "/defi/txs/token",
   tokenList: "/defi/tokenlist",
 } as const;

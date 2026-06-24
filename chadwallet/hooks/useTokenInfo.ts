@@ -19,8 +19,8 @@ export function useTokenInfo(tokenAddress: string): UseTokenInfoReturn {
       return json.data;
     },
     {
-      refreshInterval: POLL_TOKEN_INFO_MS,
-      dedupingInterval: POLL_TOKEN_INFO_MS,
+      refreshInterval: POLL_TOKEN_INFO_MS || undefined,
+      dedupingInterval: 10_000,
     }
   );
 

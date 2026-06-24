@@ -185,18 +185,28 @@ export class BirdEyeService {
   async getTopHolders(address: string, limit?: number): Promise<Holder[]> {
     try {
       const resolvedLimit = limit ?? 20;
+      const overviewUrl = `${BIRDEYE_BASE_URL}${BIRDEYE_ENDPOINTS.tokenOverview}?address=${address}`;
       const url = `${BIRDEYE_BASE_URL}${BIRDEYE_ENDPOINTS.tokenHolder}?address=${address}&offset=0&limit=${resolvedLimit}`;
-      const response = await apiFetch<BirdEyeResponse<BirdEyeHolderResponse>>(url, this.getHeaders());
+
+      const [overviewRes, response] = await Promise.all([
+        apiFetch<BirdEyeResponse<BirdEyeTokenOverview>>(overviewUrl, this.getHeaders()).catch(() => null),
+        apiFetch<BirdEyeResponse<BirdEyeHolderResponse>>(url, this.getHeaders())
+      ]);
 
       if (!response.success || !response.data?.items) {
         throw new BirdEyeError(`Failed to fetch top holders for token ${address}: Success is false or items are missing.`);
       }
 
-      return response.data.items.map((item) => ({
+      const items = response.data.items;
+      const totalSupply = overviewRes?.data?.totalSupply || overviewRes?.data?.circulatingSupply || 0;
+      const totalAmountInBatch = items.reduce((sum, item) => sum + (item.ui_amount || 0), 0);
+      const denominator = totalSupply > 0 ? totalSupply : (totalAmountInBatch || 1);
+
+      return items.map((item, idx) => ({
         address: item.owner,
-        amount: item.uiAmount || 0,
-        percentage: item.percentage || 0,
-        rank: item.rank || 0,
+        amount: item.ui_amount || 0,
+        percentage: ((item.ui_amount || 0) / denominator) * 100,
+        rank: idx + 1,
       }));
     } catch (err) {
       if (err instanceof BirdEyeError) throw err;

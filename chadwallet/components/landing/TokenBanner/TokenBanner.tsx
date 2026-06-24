@@ -64,7 +64,7 @@ export function TokenBanner({
                 <span className="text-text-muted text-sm font-medium">
                   {formatPrice(token.price)}
                 </span>
-                <PriceChange value={token.priceChange24h} showSign={true} />
+                <PriceChange value={token.priceChange24h} />
               </Link>
               <span className="text-border font-bold text-lg select-none">•</span>
             </React.Fragment>

@@ -10,7 +10,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function updateSession(request: NextRequest): Promise<NextResponse> {
   // Use the request to prevent ESLint unused variable errors
   if (!request.nextUrl) {
-    console.log("Middleware called without url context");
+    // Silent check
   }
   return NextResponse.next();
 }

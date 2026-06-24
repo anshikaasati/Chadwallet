@@ -26,8 +26,14 @@ export class BirdEyeError extends ApiError {
 }
 
 export class JupiterError extends ApiError {
-  constructor(message: string, status: number = 502) {
-    super("JUPITER_API_ERROR", message, status);
+  constructor(message: string, status?: number);
+  constructor(code: string, message: string, status?: number);
+  constructor(arg1: string, arg2?: string | number, arg3?: number) {
+    if (typeof arg2 === "string") {
+      super(arg1, arg2, arg3 ?? 502);
+    } else {
+      super("JUPITER_API_ERROR", arg1, (arg2 as number) ?? 502);
+    }
     this.name = "JupiterError";
   }
 }
@@ -57,6 +63,17 @@ export function handleApiError(err: unknown): NextResponse {
   console.error("API Error encountered:", err);
 
   if (err instanceof ApiError) {
+    let status = err.status;
+    if (err.code === "UNAUTHORIZED") {
+      status = 401;
+    } else if (err.code === "NOT_FOUND") {
+      status = 404;
+    } else if (err.code === "VALIDATION_ERROR") {
+      status = 422;
+    } else if (err.code === "NO_ROUTE_FOUND") {
+      status = 422;
+    }
+
     return NextResponse.json(
       {
         error: {
@@ -64,7 +81,7 @@ export function handleApiError(err: unknown): NextResponse {
           message: err.message,
         },
       },
-      { status: err.status }
+      { status }
     );
   }
 
@@ -85,7 +102,7 @@ export function handleApiError(err: unknown): NextResponse {
     {
       error: {
         code: "INTERNAL_SERVER_ERROR",
-        message: err instanceof Error ? err.message : "An unexpected error occurred.",
+        message: "An unexpected error occurred.",
       },
     },
     { status: 500 }

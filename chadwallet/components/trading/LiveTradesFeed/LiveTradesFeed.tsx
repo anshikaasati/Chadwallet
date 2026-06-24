@@ -3,7 +3,7 @@
 
 import React from "react";
 import { Trade } from "@/types";
-import { formatAddress, formatNumberAbbreviated, formatPrice } from "@/lib/utils";
+import { formatAddress, formatNumberAbbreviated, formatPrice, formatRelativeTime } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/Skeleton/Skeleton";
 import { Button } from "@/components/ui/Button/Button";
 
@@ -20,15 +20,6 @@ export function LiveTradesFeed({
   error,
   onRetry,
 }: LiveTradesFeedProps): React.JSX.Element {
-  const formatTime = (ts: number): string => {
-    const d = new Date(ts);
-    return d.toLocaleTimeString(undefined, {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    });
-  };
 
   if (error) {
     return (
@@ -126,7 +117,7 @@ export function LiveTradesFeed({
                   className="hover:bg-bg-primary/40 transition-colors trade-row-new"
                 >
                   <td className="py-2.5 pl-1 font-mono text-text-muted">
-                    {formatTime(trade.timestamp)}
+                    {formatRelativeTime(trade.timestamp)}
                   </td>
                   <td className="py-2.5">
                     <span
