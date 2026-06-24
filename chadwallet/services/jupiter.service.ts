@@ -5,35 +5,82 @@ import {
   SwapTransactionRequest,
   SwapTransactionResponse,
 } from "@/types";
+import { JUPITER_QUOTE_URL, JUPITER_SWAP_URL } from "@/constants";
+import { apiFetch } from "@/services/http.client";
+import { JupiterError } from "@/lib/errors";
 
 export class JupiterService {
   /**
    * Fetches a swap route quote from Jupiter.
+   * Calls Jupiter v6 GET quote endpoint.
    */
   async getQuote(req: QuoteRequest): Promise<QuoteResponse> {
-    // TODO: Implement actual Jupiter quote fetch
-    return {
-      inputMint: req.inputMint,
-      outputMint: req.outputMint,
-      inAmount: req.amount.toString(),
-      outAmount: "0",
-      priceImpactPct: 0,
-      routePlan: [],
-      otherAmountThreshold: "0",
-      swapMode: "ExactIn",
-    };
+    try {
+      const url = new URL(JUPITER_QUOTE_URL);
+      url.searchParams.append("inputMint", req.inputMint);
+      url.searchParams.append("outputMint", req.outputMint);
+      url.searchParams.append("amount", req.amount.toString());
+      url.searchParams.append("slippageBps", req.slippageBps.toString());
+
+      const data = await apiFetch<QuoteResponse>(url.toString());
+
+      if (!data || !data.routePlan || data.routePlan.length === 0) {
+        throw new JupiterError("No swap routes found for the selected tokens.");
+      }
+
+      return {
+        inputMint: data.inputMint,
+        outputMint: data.outputMint,
+        inAmount: data.inAmount,
+        outAmount: data.outAmount,
+        priceImpactPct: data.priceImpactPct,
+        routePlan: data.routePlan,
+        otherAmountThreshold: data.otherAmountThreshold,
+        swapMode: data.swapMode,
+      };
+    } catch (err) {
+      if (err instanceof JupiterError) throw err;
+      throw new JupiterError(
+        err instanceof Error ? err.message : "Failed to retrieve swap route quote from Jupiter."
+      );
+    }
   }
 
   /**
    * Assembles a serialized Solana transaction for signing and broadcasting.
+   * Calls Jupiter v6 POST swap transaction endpoint.
    */
   async assembleTransaction(req: SwapTransactionRequest): Promise<SwapTransactionResponse> {
-    // TODO: Implement actual Jupiter swap transaction creation
-    return {
-      swapTransaction: "",
-      lastValidBlockHeight: 0,
-      prioritizationFeeLamports: 0,
-    };
+    try {
+      const body = {
+        quoteResponse: req.quoteResponse,
+        userPublicKey: req.userPublicKey,
+        wrapAndUnwrapSol: req.wrapAndUnwrapSol ?? true,
+      };
+
+      const response = await apiFetch<SwapTransactionResponse>(JUPITER_SWAP_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response || !response.swapTransaction) {
+        throw new JupiterError("Jupiter API did not return a valid serialized transaction.");
+      }
+
+      return {
+        swapTransaction: response.swapTransaction,
+        lastValidBlockHeight: response.lastValidBlockHeight,
+        prioritizationFeeLamports: response.prioritizationFeeLamports,
+      };
+    } catch (err) {
+      if (err instanceof JupiterError) throw err;
+      throw new JupiterError(
+        err instanceof Error ? err.message : "Failed to assemble swap transaction using Jupiter."
+      );
+    }
   }
 }
 

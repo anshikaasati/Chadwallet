@@ -39,6 +39,13 @@ export class AlchemyError extends ApiError {
   }
 }
 
+export class DatabaseError extends ApiError {
+  constructor(message: string, status: number = 500) {
+    super("DATABASE_ERROR", message, status);
+    this.name = "DatabaseError";
+  }
+}
+
 export class NetworkError extends Error {
   constructor(message: string) {
     super(message);

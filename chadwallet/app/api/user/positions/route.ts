@@ -2,17 +2,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PositionSchema } from "@/types";
 import { supabaseService } from "@/services";
-import { handleApiError } from "@/lib/errors";
+import { ApiError, handleApiError } from "@/lib/errors";
+import { getAuthFromRequest } from "@/lib/auth";
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
+    const auth = await getAuthFromRequest(request);
     const { searchParams } = new URL(request.url);
-    const userId = searchParams.get("userId");
+    const userId = searchParams.get("userId") || auth.userId;
 
-    if (!userId) {
-      return NextResponse.json(
-        { error: { code: "INVALID_USER", message: "userId parameter is required." } },
-        { status: 400 }
+    if (auth.userId !== userId) {
+      throw new ApiError(
+        "FORBIDDEN",
+        "Authenticated user ID does not match the requested user ID.",
+        403
       );
     }
 
@@ -25,6 +28,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
+    const auth = await getAuthFromRequest(request);
+
     const body = await request.json();
     const result = PositionSchema.safeParse(body);
 
@@ -38,6 +43,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           },
         },
         { status: 400 }
+      );
+    }
+
+    if (auth.userId !== result.data.userId) {
+      throw new ApiError(
+        "FORBIDDEN",
+        "Authenticated user ID does not match the position user ID.",
+        403
       );
     }
 
