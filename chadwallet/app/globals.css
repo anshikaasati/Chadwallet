@@ -31,10 +31,12 @@ body {
 
 .animate-marquee-left {
   animation: marquee-left 35s linear infinite;
+  will-change: transform;
 }
 
 .animate-marquee-right {
   animation: marquee-right 35s linear infinite;
+  will-change: transform;
 }
 
 .pause-on-hover:hover {

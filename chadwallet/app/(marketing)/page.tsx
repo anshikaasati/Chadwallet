@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: "The fastest Solana trading interface. Real-time prices, instant swaps.",
       images: [
         {
-          url: "/chadwallet/logo.svg",
+          url: "/logo/dark.png",
           width: 512,
           height: 512,
           alt: "ChadWallet Logo",

@@ -22,7 +22,7 @@ export function NavBar({ rightElement }: NavBarProps): React.JSX.Element {
     <nav className="flex justify-between items-center px-6 py-4 bg-bg-surface border-b border-border">
       <Link href="/" className="flex items-center gap-2">
         <Image
-          src="/chadwallet/logo.svg"
+          src="/logo/dark.png"
           alt="ChadWallet Logo"
           width={32}
           height={32}

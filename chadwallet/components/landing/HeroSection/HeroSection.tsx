@@ -14,7 +14,7 @@ export function HeroSection(): React.JSX.Element {
       <div className="relative mb-6 z-10">
         <div className="absolute inset-0 bg-accent rounded-full opacity-[0.12] blur-md filter scale-105 pointer-events-none" />
         <Image
-          src="/chadwallet/logo.svg"
+          src="/logo/dark.png"
           alt="ChadWallet Logo"
           width={120}
           height={120}
