@@ -40,10 +40,10 @@ export function AppDownloadCTA(): React.JSX.Element {
             <path d="M3 5.27793C3 4.25895 4.1165 3.63004 4.99187 4.15286L20.2525 13.2676C21.1092 13.7792 21.1092 15.0131 20.2525 15.5247L4.99187 24.6394C4.1165 25.1623 3 24.5333 3 23.5144V5.27793Z" fill="url(#play-grad)" />
             <defs>
               <linearGradient id="play-grad" x1="3" y1="14.3962" x2="20.67" y2="14.3962" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#00C0FF" />
-                <stop offset="0.3" stop-color="#00E7A6" />
-                <stop offset="0.7" stop-color="#FFC500" />
-                <stop offset="1" stop-color="#FF3A44" />
+                <stop stopColor="#00C0FF" />
+                <stop offset="0.3" stopColor="#00E7A6" />
+                <stop offset="0.7" stopColor="#FFC500" />
+                <stop offset="1" stopColor="#FF3A44" />
               </linearGradient>
             </defs>
           </svg>
