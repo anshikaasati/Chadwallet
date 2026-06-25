@@ -49,7 +49,7 @@ export function HeroSection(): React.JSX.Element {
         </div>
 
         {/* Right Column: Interactive Mock Terminal */}
-        <div className="lg:col-span-5 w-full flex justify-center items-center animate-float">
+        <div className="hidden lg:flex lg:col-span-5 w-full justify-center items-center animate-float">
           <div className="w-full max-w-[460px] lg:max-w-none">
             <MockTradingTerminal />
           </div>

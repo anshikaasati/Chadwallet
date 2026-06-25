@@ -89,6 +89,32 @@ export function LiveTradesFeed({
         .trade-row-new {
           animation: trade-slide-in 0.4s ease-out forwards;
         }
+        /* Custom themed sleek scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 5px;
+          height: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 9999px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(124, 58, 237, 0.4);
+        }
+        /* Explicit column-hiding helper rules for responsiveness */
+        @media (max-width: 767px) {
+          .hide-column-mobile {
+            display: none !important;
+          }
+        }
+        @media (max-width: 1023px) {
+          .hide-column-tablet {
+            display: none !important;
+          }
+        }
       `}} />
 
       <div className="flex items-center justify-between mb-4 border-b border-border/40 pb-2.5">
@@ -99,7 +125,7 @@ export function LiveTradesFeed({
         </div>
       </div>
 
-      <div className="overflow-x-auto max-h-[350px] overflow-y-auto pr-1">
+      <div className="overflow-x-auto max-h-[350px] overflow-y-auto pr-1 custom-scrollbar">
         <table className="w-full text-left border-collapse text-xs">
           <thead>
             <tr className="border-b border-border/60 text-text-muted font-bold text-[10px] uppercase tracking-wider sticky top-0 bg-bg-surface z-10">
@@ -107,8 +133,8 @@ export function LiveTradesFeed({
               <th className="py-2.5">Type</th>
               <th className="py-2.5 text-right">Price</th>
               <th className="py-2.5 text-right">Amount</th>
-              <th className="py-2.5 text-right">Total USD</th>
-              <th className="py-2.5 pr-1 text-right">Maker</th>
+              <th className="py-2.5 text-right hide-column-mobile">Total USD</th>
+              <th className="py-2.5 pr-1 text-right hide-column-tablet">Maker</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border/20">
@@ -137,10 +163,10 @@ export function LiveTradesFeed({
                   <td className="py-2.5 text-right font-mono font-semibold text-text-primary">
                     {formatNumberAbbreviated(trade.amount)}
                   </td>
-                  <td className="py-2.5 text-right font-mono font-bold text-text-primary">
+                  <td className="py-2.5 text-right font-mono font-bold text-text-primary hide-column-mobile">
                     {formatPrice(trade.amountUsd)}
                   </td>
-                  <td className="py-2.5 pr-1 text-right font-mono">
+                  <td className="py-2.5 pr-1 text-right font-mono hide-column-tablet">
                     <a
                       href={`https://solscan.io/tx/${trade.txHash}`}
                       target="_blank"

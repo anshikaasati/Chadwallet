@@ -66,6 +66,8 @@ export function PriceChart({ tokenAddress }: PriceChartProps): React.JSX.Element
         const textMuted = getCssVar("--color-text-muted", "#94a3b8");
         const buy = getCssVar("--color-buy", "#22c55e");
         const sell = getCssVar("--color-sell", "#ef4444");
+        
+        const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
         if (isAdvanced) {
           activeWidget = new wWindow.TradingView.widget({
@@ -77,7 +79,7 @@ export function PriceChart({ tokenAddress }: PriceChartProps): React.JSX.Element
             locale: "en",
             theme: "Dark",
             autosize: true,
-            disabled_features: ["use_localstorage_for_settings"],
+            disabled_features: ["use_localstorage_for_settings", ...(isMobile ? ["left_toolbar"] : [])],
             enabled_features: [],
             overrides: {
               "paneProperties.background": bgPrimary,
@@ -96,7 +98,7 @@ export function PriceChart({ tokenAddress }: PriceChartProps): React.JSX.Element
           // CDN Fallback widget
           activeWidget = new wWindow.TradingView.widget({
             width: "100%",
-            height: "100%",
+            height: isMobile ? 340 : 400,
             symbol: tokenAddress === SOL_MINT ? "BINANCE:SOLUSDT" : "BINANCE:SOLUSDT",
             interval: "15",
             timezone: "Etc/UTC",
@@ -105,7 +107,7 @@ export function PriceChart({ tokenAddress }: PriceChartProps): React.JSX.Element
             locale: "en",
             toolbar_bg: bgPrimary,
             enable_publishing: false,
-            hide_side_toolbar: false,
+            hide_side_toolbar: isMobile,
             allow_symbol_change: true,
             container_id: containerId,
           });
@@ -167,7 +169,7 @@ export function PriceChart({ tokenAddress }: PriceChartProps): React.JSX.Element
   }, [tokenAddress, containerId]);
 
   return (
-    <div className="w-full h-[450px] bg-bg-surface border border-border rounded-xl flex flex-col overflow-hidden relative shadow-sm">
+    <div className="w-full h-[380px] sm:h-[450px] bg-bg-surface border border-border rounded-xl flex flex-col overflow-hidden relative shadow-sm">
       <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-bg-surface/50">
         <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Live Price Chart</span>
         <div className="flex items-center gap-1.5">
@@ -175,7 +177,7 @@ export function PriceChart({ tokenAddress }: PriceChartProps): React.JSX.Element
           <span className="text-[10px] font-bold text-buy uppercase">Live Feed</span>
         </div>
       </div>
-      <div id={containerId} className="flex-1 w-full h-full min-h-[400px]" />
+      <div id={containerId} className="flex-1 w-full h-full min-h-[300px]" />
     </div>
   );
 }

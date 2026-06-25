@@ -114,34 +114,34 @@ export function TokenInfoHeader({
           </button>
         </div>
       </div>
-      <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
+      <div className="grid grid-cols-2 gap-x-4 gap-y-3.5 w-full sm:grid-cols-3 md:flex md:flex-wrap items-center md:w-auto mt-4 md:mt-0 pt-4 border-t border-border/40 md:pt-0 md:border-t-0">
         <div className="flex flex-col">
-          <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Price</span>
-          <span className="text-lg font-extrabold text-text-primary">
+          <span className="text-[10px] sm:text-xs font-bold text-text-muted uppercase tracking-wider">Price</span>
+          <span className="text-sm sm:text-lg font-extrabold text-text-primary">
             {formatPrice(tokenStats.price)}
           </span>
         </div>
         <div className="flex flex-col">
-          <span className="text-xs font-bold text-text-muted uppercase tracking-wider">24h Change</span>
-          <span className={`text-lg font-extrabold ${isPositive ? "text-buy" : "text-sell"}`}>
+          <span className="text-[10px] sm:text-xs font-bold text-text-muted uppercase tracking-wider">24h Change</span>
+          <span className={`text-sm sm:text-lg font-extrabold ${isPositive ? "text-buy" : "text-sell"}`}>
             {formatPercent(tokenStats.priceChange24h)}
           </span>
         </div>
         <div className="flex flex-col">
-          <span className="text-xs font-bold text-text-muted uppercase tracking-wider">24h Volume</span>
-          <span className="text-lg font-extrabold text-text-primary">
+          <span className="text-[10px] sm:text-xs font-bold text-text-muted uppercase tracking-wider">24h Volume</span>
+          <span className="text-sm sm:text-lg font-extrabold text-text-primary">
             ${formatLargeNumber(tokenStats.volume24h)}
           </span>
         </div>
         <div className="flex flex-col">
-          <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Market Cap</span>
-          <span className="text-lg font-extrabold text-text-primary">
+          <span className="text-[10px] sm:text-xs font-bold text-text-muted uppercase tracking-wider">Market Cap</span>
+          <span className="text-sm sm:text-lg font-extrabold text-text-primary">
             ${formatLargeNumber(tokenStats.marketCap || 0)}
           </span>
         </div>
         <div className="flex flex-col">
-          <span className="text-xs font-bold text-text-muted uppercase tracking-wider">Liquidity</span>
-          <span className="text-lg font-extrabold text-text-primary">
+          <span className="text-[10px] sm:text-xs font-bold text-text-muted uppercase tracking-wider">Liquidity</span>
+          <span className="text-sm sm:text-lg font-extrabold text-text-primary">
             ${formatLargeNumber(tokenStats.liquidity)}
           </span>
         </div>

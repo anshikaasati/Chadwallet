@@ -98,7 +98,7 @@ export function TradingLayout({
         </div>
 
         {/* 3. Right Column: Swap Panel, User Position */}
-        <div className={`w-full xl:w-[320px] flex-shrink-0 flex flex-col gap-4 ${
+        <div className={`w-full xl:w-[320px] md:max-w-md md:mx-auto xl:max-w-none xl:mx-0 flex-shrink-0 flex flex-col gap-4 ${
           activeTab === "swap" ? "flex" : "hidden md:flex"
         }`}>
           <ErrorBoundary>
