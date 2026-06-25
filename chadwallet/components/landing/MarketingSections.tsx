@@ -21,35 +21,34 @@ interface SlicedPhoneFrameProps {
   imageSrc: string;
   index: number; // 0 to 3
   className?: string;
+  showText?: boolean;
+  text?: string;
 }
 
-export function SlicedPhoneFrame({ imageSrc, index, className = "" }: SlicedPhoneFrameProps) {
-  const backgroundPosition = `${(index * 100) / 3}% 0%`;
-  const backgroundSize = "400% 100%";
+export function SlicedPhoneFrame({ 
+  imageSrc, 
+  index, 
+  className = "", 
+  showText = false, 
+  text = "" 
+}: SlicedPhoneFrameProps) {
+  const backgroundPosition = `${(index * 100) / 3}% 100%`;
+  const backgroundSize = "400% 116.13%";
 
   return (
-    <div className={`relative aspect-[9/19.5] w-full max-w-[200px] border-[8px] border-slate-950 bg-black rounded-[38px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)] ring-1 ring-white/10 flex-shrink-0 ${className}`}>
-      {/* iPhone Dynamic Island */}
-      <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-20 h-4.5 bg-black rounded-full z-20 flex items-center justify-center border border-white/5">
-        <div className="w-1.5 h-1.5 bg-slate-900 rounded-full ml-auto mr-2" />
-      </div>
-      
-      {/* Sliced screen content */}
-      <div className="w-full h-full relative overflow-hidden bg-slate-950">
-        <div
-          style={{
-            backgroundImage: `url(${imageSrc})`,
-            backgroundPosition,
-            backgroundSize,
-          }}
-          className="w-full h-full bg-no-repeat transition-transform duration-500"
-        />
-        {/* Reflection overlay */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/10 pointer-events-none z-10" />
-      </div>
-
-      {/* Bottom Home Indicator */}
-      <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-16 h-1 bg-white/20 rounded-full z-30" />
+    <div 
+      className={`relative aspect-[960/1860] bg-no-repeat bg-contain flex-shrink-0 transition-transform duration-500 rounded-[28px] overflow-hidden border border-white/5 shadow-2xl ${className}`}
+      style={{
+        backgroundImage: `url(${imageSrc})`,
+        backgroundPosition,
+        backgroundSize,
+      }}
+    >
+      {showText && text && (
+        <div className="absolute top-5 left-0 right-0 text-center text-[13px] font-black text-black/80 tracking-tight z-20 pointer-events-none select-none px-4 leading-none">
+          {text}
+        </div>
+      )}
     </div>
   );
 }
@@ -123,7 +122,7 @@ export function BuySellSection() {
 
         {/* Right: Interactive Journey Sliced Phone Frame */}
         <div className="lg:col-span-6 w-full flex justify-center items-center">
-          <div className="relative w-full max-w-[360px] h-[580px] flex items-center justify-center bg-[#030B1D]/40 border border-white/5 rounded-[44px] p-6 shadow-inner relative overflow-hidden">
+          <div className="relative w-full max-w-[360px] h-[580px] flex items-center justify-center bg-[#030B1D]/40 border border-white/5 rounded-[44px] p-4 shadow-inner relative overflow-hidden">
             {/* Ambient Back Glow */}
             <div className="absolute inset-0 bg-accent/5 blur-[80px] pointer-events-none" />
 
@@ -134,12 +133,14 @@ export function BuySellSection() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: -15 }}
                 transition={{ duration: 0.35, ease: "easeInOut" }}
-                className="relative z-10"
+                className="relative z-10 w-full flex justify-center h-[520px]"
               >
                 <SlicedPhoneFrame 
                   imageSrc="/flow/buy-sell-4.png" 
                   index={activeStep} 
-                  className="scale-105 shadow-[0_30px_60px_rgba(0,0,0,0.8)]" 
+                  showText={true}
+                  text="Buy & sell trending tokens"
+                  className="h-full w-auto aspect-[960/1860] shadow-[0_30px_60px_rgba(0,0,0,0.8)] hover:scale-105 duration-300" 
                 />
               </motion.div>
             </AnimatePresence>
@@ -186,9 +187,9 @@ export function KolSection() {
                 <motion.div
                   whileHover={{ y: -8, scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className="mb-6 relative"
+                  className="mb-6 relative w-full flex justify-center"
                 >
-                  <SlicedPhoneFrame imageSrc="/flow/kol-4.png" index={idx} className="w-[160px] md:w-[185px] shadow-[0_15px_35px_rgba(0,0,0,0.6)]" />
+                  <SlicedPhoneFrame imageSrc="/flow/kol-4.png" index={idx} className="w-[185px] md:w-[215px] shadow-[0_20px_40px_rgba(0,0,0,0.7)]" />
                 </motion.div>
                 
                 {/* Text tag */}
@@ -247,16 +248,16 @@ export function MemecoinLaunchSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative items-start">
           
           {/* Horizontal timeline connect bar on desktop */}
-          <div className="absolute top-[170px] left-[8%] right-[8%] h-[2px] bg-gradient-to-r from-accent/20 via-accent/60 to-accent/20 pointer-events-none hidden lg:block z-0" />
+          <div className="absolute top-[236px] left-[8%] right-[8%] h-[2px] bg-gradient-to-r from-accent/20 via-accent/60 to-accent/20 pointer-events-none hidden lg:block z-0" />
 
           {steps.map((step, idx) => (
             <div key={idx} className="flex flex-col items-center text-center relative z-10 group">
               {/* Phone mockup frame */}
               <motion.div
                 whileHover={{ y: -8, scale: 1.02 }}
-                className="mb-6 relative z-10"
+                className="mb-6 relative z-10 w-full flex justify-center"
               >
-                <SlicedPhoneFrame imageSrc="/flow/launch-4.png" index={idx} className="w-[170px] md:w-[190px]" />
+                <SlicedPhoneFrame imageSrc="/flow/launch-4.png" index={idx} className="w-[180px] md:w-[210px] shadow-[0_20px_40px_rgba(0,0,0,0.7)]" />
               </motion.div>
 
               {/* Step indicator */}
@@ -343,34 +344,34 @@ export function TwitterTrendsSection() {
         </div>
 
         {/* Right screenshots layered depth layout */}
-        <div className="lg:col-span-6 flex justify-center items-center relative min-h-[460px]">
+        <div className="lg:col-span-6 flex justify-center items-center relative min-h-[500px]">
           
-          <div className="relative w-full max-w-[350px] h-[400px] flex items-center justify-center">
+          <div className="relative w-full max-w-[420px] h-[480px] flex items-center justify-center">
             {/* Phone 1 (Back Left) */}
             <motion.div 
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute left-0 top-10 z-10 w-[140px] md:w-[165px] opacity-40 select-none pointer-events-none"
+              className="absolute left-0 top-10 z-10 w-[155px] md:w-[180px] opacity-40 select-none pointer-events-none"
             >
-              <SlicedPhoneFrame imageSrc="/flow/memecoin-4.png" index={1} />
+              <SlicedPhoneFrame imageSrc="/flow/memecoin-4.png" index={1} className="w-full" />
             </motion.div>
 
             {/* Phone 2 (Back Right) */}
             <motion.div 
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 5.4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-              className="absolute right-0 bottom-10 z-10 w-[140px] md:w-[165px] opacity-40 select-none pointer-events-none"
+              className="absolute right-0 bottom-10 z-10 w-[155px] md:w-[180px] opacity-40 select-none pointer-events-none"
             >
-              <SlicedPhoneFrame imageSrc="/flow/memecoin-4.png" index={2} />
+              <SlicedPhoneFrame imageSrc="/flow/memecoin-4.png" index={2} className="w-full" />
             </motion.div>
 
             {/* Phone 3 (Center Front) */}
             <motion.div 
               animate={{ y: [0, -12, 0] }}
               transition={{ duration: 5.8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute z-20 w-[160px] md:w-[190px] shadow-[0_30px_60px_rgba(0,0,0,0.8)]"
+              className="absolute z-20 w-[180px] md:w-[210px] shadow-[0_30px_60px_rgba(0,0,0,0.8)]"
             >
-              <SlicedPhoneFrame imageSrc="/flow/memecoin-4.png" index={0} />
+              <SlicedPhoneFrame imageSrc="/flow/memecoin-4.png" index={0} className="w-full" />
             </motion.div>
           </div>
 
@@ -396,31 +397,31 @@ export function AssetsSection() {
         {/* Left: Central portfolio phone with orbiting screenshots */}
         <div className="lg:col-span-7 flex justify-center items-center relative min-h-[520px]">
           
-          <div className="relative w-full max-w-[380px] h-[480px] flex items-center justify-center">
+          <div className="relative w-full max-w-[420px] h-[480px] flex items-center justify-center">
             
             {/* Orbiting Phone Left (Send) */}
             <motion.div 
               animate={{ y: [0, -14, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute left-[-20px] top-[15%] z-10 w-[110px] md:w-[130px] opacity-40 shadow-xl border border-white/5 rounded-[24px] overflow-hidden"
+              className="absolute left-[-40px] top-[12%] z-10 w-[130px] md:w-[155px] opacity-40 shadow-xl border border-white/5 rounded-[24px] overflow-hidden"
             >
-              <SlicedPhoneFrame imageSrc="/flow/portfolio-4.png" index={1} className="max-w-none w-full" />
+              <SlicedPhoneFrame imageSrc="/flow/portfolio-4.png" index={1} className="w-full" />
             </motion.div>
 
             {/* Orbiting Phone Right (Receive/Deposit) */}
             <motion.div 
               animate={{ y: [0, 14, 0] }}
               transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-              className="absolute right-[-20px] bottom-[15%] z-10 w-[110px] md:w-[130px] opacity-40 shadow-xl border border-white/5 rounded-[24px] overflow-hidden"
+              className="absolute right-[-40px] bottom-[12%] z-10 w-[130px] md:w-[155px] opacity-40 shadow-xl border border-white/5 rounded-[24px] overflow-hidden"
             >
-              <SlicedPhoneFrame imageSrc="/flow/portfolio-4.png" index={2} className="max-w-none w-full" />
+              <SlicedPhoneFrame imageSrc="/flow/portfolio-4.png" index={2} className="w-full" />
             </motion.div>
 
             {/* Primary Visual Phone: Portfolio index 0 (Center) */}
             <SlicedPhoneFrame 
               imageSrc="/flow/portfolio-4.png" 
               index={0} 
-              className="scale-110 z-20 shadow-[0_30px_70px_rgba(0,0,0,0.85)] border-[8px] border-slate-950" 
+              className="w-[190px] md:w-[220px] scale-110 z-20 shadow-[0_30px_70px_rgba(0,0,0,0.85)]" 
             />
 
           </div>
