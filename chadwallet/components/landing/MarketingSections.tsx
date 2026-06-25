@@ -122,7 +122,7 @@ export function BuySellSection() {
 
         {/* Right: Interactive Journey Sliced Phone Frame */}
         <div className="lg:col-span-6 w-full flex justify-center items-center">
-          <div className="relative w-full max-w-[360px] h-[580px] flex items-center justify-center bg-[#030B1D]/40 border border-white/5 rounded-[44px] p-4 shadow-inner relative overflow-hidden">
+          <div className="relative w-full max-w-[320px] aspect-[960/1860]">
             {/* Ambient Back Glow */}
             <div className="absolute inset-0 bg-accent/5 blur-[80px] pointer-events-none" />
 
@@ -133,14 +133,14 @@ export function BuySellSection() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: -15 }}
                 transition={{ duration: 0.35, ease: "easeInOut" }}
-                className="relative z-10 w-full flex justify-center h-[520px]"
+                className="relative z-10 w-full h-full"
               >
                 <SlicedPhoneFrame 
                   imageSrc="/flow/buy-sell-4.png" 
                   index={activeStep} 
                   showText={true}
                   text="Buy & sell trending tokens"
-                  className="h-full w-auto aspect-[960/1860] shadow-[0_30px_60px_rgba(0,0,0,0.8)] hover:scale-105 duration-300" 
+                  className="w-full h-full shadow-[0_30px_60px_rgba(0,0,0,0.8)] hover:scale-105 duration-300" 
                 />
               </motion.div>
             </AnimatePresence>
