@@ -23,13 +23,13 @@ function BentoCard({
   imageAlt,
   colSpan = "col-span-1",
 }: BentoCardProps) {
-  const isWide = colSpan.includes("col-span-8");
+  const isWide = colSpan.includes("lg:col-span-8");
 
   return (
     <motion.div
       whileHover={{ y: -6 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className={`relative overflow-hidden rounded-[24px] border border-white/5 bg-white/[0.02] p-6 flex flex-col justify-between group shadow-xl ${colSpan}`}
+      className={`relative overflow-hidden rounded-[24px] border border-white/5 bg-white/[0.02] p-6 flex flex-col justify-between group shadow-xl min-h-[280px] ${colSpan}`}
     >
       {/* Background Gradient Glow */}
       <div className="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-accent/5 opacity-40 blur-[50px] group-hover:bg-accent-light/10 transition-all duration-500" />
@@ -100,13 +100,13 @@ function BentoCard({
 
 export function FeaturesBento(): React.JSX.Element {
   return (
-    <section className="w-full max-w-6xl py-24 px-6 mx-auto select-none relative z-10">
+    <section id="features-bento" className="w-full max-w-6xl py-16 sm:py-24 lg:py-32 px-5 sm:px-8 lg:px-6 mx-auto select-none relative z-10">
       <div className="text-center mb-16">
         <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-accent-dim border border-accent/15 text-xs font-bold text-accent mb-6 uppercase tracking-wider">
           <LineChart className="w-3.5 h-3.5" />
           Product Specs
         </div>
-        <h2 className="text-3xl md:text-5xl font-black text-white mb-4 tracking-tight leading-tight">
+        <h2 className="text-[32px] md:text-[44px] lg:text-[56px] font-black text-white mb-4 tracking-tighter leading-[1.05]">
           Everything you need to win.
         </h2>
         <p className="text-sm sm:text-base text-text-muted max-w-xl mx-auto leading-relaxed">
@@ -114,11 +114,11 @@ export function FeaturesBento(): React.JSX.Element {
         </p>
       </div>
 
-      {/* Bento Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 w-full">
+      {/* Bento Grid (Desktop: 12-cols, Tablet: 2-cols, Mobile: 1-col) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-6 w-full">
         {/* Card 1: Instant Trading */}
         <BentoCard
-          colSpan="md:col-span-8"
+          colSpan="col-span-1 sm:col-span-2 lg:col-span-8"
           title="Instant Trading"
           description="Execute instant swaps across Solana DEXs with smart routing, custom slippage protection, and MEV shield."
           icon={<Zap className="w-4 h-4 text-accent" />}
@@ -128,7 +128,7 @@ export function FeaturesBento(): React.JSX.Element {
 
         {/* Card 2: Trending Tokens */}
         <BentoCard
-          colSpan="md:col-span-4"
+          colSpan="col-span-1 sm:col-span-1 lg:col-span-4"
           title="Trending Tokens"
           description="Monitor your balances, open positions, average entry prices, and historic performance in real-time."
           icon={<LineChart className="w-4 h-4 text-accent-light" />}
@@ -138,7 +138,7 @@ export function FeaturesBento(): React.JSX.Element {
 
         {/* Card 3: Smart Money */}
         <BentoCard
-          colSpan="md:col-span-4"
+          colSpan="col-span-1 sm:col-span-1 lg:col-span-4"
           title="Smart Money"
           description="Inspect top traders' portfolios, performance scores, historic profit shares, and duplicate their moves."
           icon={<Users className="w-4 h-4 text-accent-blue" />}
@@ -148,7 +148,7 @@ export function FeaturesBento(): React.JSX.Element {
 
         {/* Card 4: Memecoin Launches */}
         <BentoCard
-          colSpan="md:col-span-8"
+          colSpan="col-span-1 sm:col-span-2 lg:col-span-8"
           title="Memecoin Launches"
           description="Create and fund new Solana tokens directly from tweets. Configure metadata and secure smart launches in seconds."
           icon={<Coins className="w-4 h-4 text-accent" />}
@@ -158,7 +158,7 @@ export function FeaturesBento(): React.JSX.Element {
 
         {/* Card 5: Portfolio Management */}
         <BentoCard
-          colSpan="md:col-span-6"
+          colSpan="col-span-1 sm:col-span-1 lg:col-span-6"
           title="Portfolio Management"
           description="Send, receive, deposit, and withdraw assets easily with multi-wallet support and full security."
           icon={<Wallet className="w-4 h-4 text-accent-light" />}
@@ -168,7 +168,7 @@ export function FeaturesBento(): React.JSX.Element {
 
         {/* Card 6: Market Intelligence */}
         <BentoCard
-          colSpan="md:col-span-6"
+          colSpan="col-span-1 sm:col-span-1 lg:col-span-6"
           title="Market Intelligence"
           description="Stay ahead with real-time Twitter sentiment analysis, smart wallet buy tracking, and holder analysis."
           icon={<TrendingUp className="w-4 h-4 text-accent-blue" />}

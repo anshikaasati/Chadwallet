@@ -36,7 +36,7 @@ export function HeroSection(): React.JSX.Element {
   };
 
   return (
-    <section className="relative flex items-center justify-center min-h-[calc(100vh-80px)] w-full py-16 px-6 sm:px-12 overflow-hidden bg-[#010816] select-none">
+    <section className="relative flex items-center justify-center min-h-[calc(100vh-80px)] w-full py-16 sm:py-24 lg:py-32 px-5 sm:px-8 lg:px-6 overflow-hidden bg-[#010816] select-none">
       {/* Background Neon Green Subtle Glow Orb */}
       <div className="absolute top-[20%] right-[-10%] w-[550px] h-[550px] rounded-full bg-accent/5 opacity-30 blur-[130px] pointer-events-none z-0" />
       <div className="absolute bottom-[10%] left-[-10%] w-[450px] h-[450px] rounded-full bg-accent-light/5 opacity-20 blur-[120px] pointer-events-none z-0" />
@@ -57,7 +57,7 @@ export function HeroSection(): React.JSX.Element {
           </motion.div>
 
           {/* Headline (80px target sizing) */}
-          <h1 className="text-[44px] sm:text-[64px] lg:text-[80px] font-black text-white mb-6 tracking-tighter leading-[0.95] max-w-2xl">
+          <h1 className="text-[42px] sm:text-[64px] lg:text-[80px] font-black text-white mb-6 tracking-tighter leading-[0.95] max-w-2xl">
             Trade Faster Than The Market.
           </h1>
 
@@ -117,7 +117,7 @@ export function HeroSection(): React.JSX.Element {
         </div>
 
         {/* Right Column: Walkthrough Video Phone + Parallax Floating screenshots */}
-        <div className="lg:col-span-5 w-full flex justify-center items-center relative min-h-[500px] md:min-h-[620px]">
+        <div className="lg:col-span-5 w-full flex flex-col justify-center items-center relative min-h-[500px] md:min-h-[620px] gap-6">
           
           {/* Floating Screenshot 1 (Top Left) */}
           <motion.div
@@ -176,7 +176,7 @@ export function HeroSection(): React.JSX.Element {
           </motion.div>
 
           {/* Center Ultra-realistic iPhone Mockup with walkthrough video */}
-          <div className="relative z-20 w-[255px] h-[520px] border-[9px] border-slate-950 rounded-[42px] bg-black shadow-[0_30px_60px_rgba(0,0,0,0.85)] overflow-hidden ring-1 ring-white/10 flex flex-col justify-between">
+          <div className="relative z-20 w-[85vw] max-w-[380px] sm:w-[255px] h-[480px] sm:h-[520px] border-[9px] border-slate-950 rounded-[42px] bg-black shadow-[0_30px_60px_rgba(0,0,0,0.85)] overflow-hidden ring-1 ring-white/10 flex flex-col justify-between mx-auto">
             {/* Dynamic Island */}
             <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-4.5 bg-black rounded-full z-30 flex items-center justify-center border border-white/5">
               <div className="w-1 h-1 bg-slate-900 rounded-full ml-auto mr-2" />
@@ -198,6 +198,23 @@ export function HeroSection(): React.JSX.Element {
 
             {/* Bottom Home Indicator */}
             <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-20 h-1 bg-white/20 rounded-full z-30" />
+          </div>
+
+          {/* Mobile Indicator Chips */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-2 z-20 max-w-[380px] px-2">
+            {[
+              "Trending Tokens",
+              "KOL Tracking",
+              "Memecoin Launching",
+              "Portfolio"
+            ].map((chip) => (
+              <span
+                key={chip}
+                className="px-3 py-1.5 rounded-full text-[9px] font-black text-accent bg-accent/10 border border-accent/15 tracking-wide uppercase select-none"
+              >
+                {chip}
+              </span>
+            ))}
           </div>
 
           {/* Background Glow Ring */}

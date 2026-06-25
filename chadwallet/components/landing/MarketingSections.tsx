@@ -56,6 +56,7 @@ export function SlicedPhoneFrame({
 // 1. Buy & Sell Trending Tokens (Interactive Journey)
 export function BuySellSection() {
   const [activeStep, setActiveStep] = useState<number>(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
   
   const steps = [
     { title: "01 Discover", desc: "Discover trending tokens in real time on the hotlist." },
@@ -64,27 +65,48 @@ export function BuySellSection() {
     { title: "04 Manage Position", desc: "Monitor entry prices and manage open holdings live." }
   ];
 
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const container = e.currentTarget;
+    if (container.clientWidth > 0) {
+      const index = Math.round(container.scrollLeft / container.clientWidth);
+      if (index >= 0 && index < 4) {
+        setActiveStep(index);
+      }
+    }
+  };
+
+  const handleDotClick = (idx: number) => {
+    const container = carouselRef.current;
+    if (container) {
+      container.scrollTo({
+        left: container.clientWidth * idx,
+        behavior: "smooth"
+      });
+      setActiveStep(idx);
+    }
+  };
+
   return (
-    <section id="features" className="w-full py-32 bg-[#010816] border-t border-white/5 relative">
+    <section id="features" className="w-full py-16 sm:py-24 lg:py-32 bg-[#010816] border-t border-white/5 relative">
       {/* Progress Line */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-32 bg-gradient-to-b from-accent to-transparent" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-16 sm:h-24 lg:h-32 bg-gradient-to-b from-accent to-transparent" />
       
-      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
         
         {/* Left: Content & Step Indicators */}
         <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left">
-          <span className="text-[14px] font-extrabold text-accent uppercase tracking-wider mb-6 block">
+          <span className="text-[13px] md:text-[14px] font-extrabold text-accent uppercase tracking-wider mb-6 block">
             Core Trading
           </span>
-          <h2 className="text-[36px] md:text-[48px] lg:text-[56px] font-black text-white tracking-tighter mb-6 leading-[1.05]">
+          <h2 className="text-[32px] md:text-[44px] lg:text-[56px] font-black text-white tracking-tighter mb-6 leading-[1.05]">
             Buy & Sell Trending Tokens
           </h2>
-          <p className="text-[18px] text-text-muted leading-relaxed mb-10 max-w-lg">
+          <p className="text-[16px] md:text-[18px] text-text-muted leading-relaxed mb-10 max-w-lg">
             Discover tokens. Analyze charts. Track positions. Execute trades instantly. Follow the exact journey from momentum alerts to position execution.
           </p>
 
-          {/* Interactive Steps List */}
-          <div className="flex flex-col gap-4 w-full text-left">
+          {/* Interactive Steps List (Desktop / Tablet >= 768px) */}
+          <div className="hidden md:flex flex-col gap-4 w-full text-left">
             {steps.map((step, idx) => {
               const isActive = activeStep === idx;
               return (
@@ -120,8 +142,8 @@ export function BuySellSection() {
           </div>
         </div>
 
-        {/* Right: Interactive Journey Sliced Phone Frame */}
-        <div className="lg:col-span-6 w-full flex justify-center items-center">
+        {/* Right: Sliced Phone Frame (Desktop / Tablet >= 768px) */}
+        <div className="hidden md:flex lg:col-span-6 w-full justify-center items-center">
           <div className="relative w-full max-w-[320px] aspect-[960/1860]">
             {/* Ambient Back Glow */}
             <div className="absolute inset-0 bg-accent/5 blur-[80px] pointer-events-none" />
@@ -147,6 +169,60 @@ export function BuySellSection() {
           </div>
         </div>
 
+        {/* Mobile-first Layout: Horizontal snap carousel (< 768px only) */}
+        <div className="block md:hidden w-full px-2">
+          <div 
+            ref={carouselRef}
+            onScroll={handleScroll}
+            className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-6 w-full pb-6"
+          >
+            {steps.map((step, idx) => (
+              <div 
+                key={idx} 
+                className="w-full shrink-0 snap-center flex flex-col items-center text-center px-2"
+              >
+                {/* Phone Frame */}
+                <div className="relative w-[180px] aspect-[960/1860] mb-6">
+                  <SlicedPhoneFrame 
+                    imageSrc="/flow/buy-sell-4.png" 
+                    index={idx} 
+                    showText={false}
+                    className="w-full h-full shadow-[0_20px_40px_rgba(0,0,0,0.6)]" 
+                  />
+                </div>
+
+                {/* Text Description */}
+                <h3 className="text-lg font-black text-white mb-2 tracking-tight">
+                  {step.title}
+                </h3>
+                <p className="text-xs text-text-dim leading-relaxed max-w-[260px] mb-2">
+                  {step.desc}
+                </p>
+                <span className="text-[9px] font-bold text-accent uppercase tracking-widest mt-1 animate-pulse select-none">
+                  Swipe {idx < 3 ? "→" : "←"}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Carousel dots progress indicators */}
+          <div className="flex justify-center items-center gap-2 mt-2">
+            {steps.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => handleDotClick(idx)}
+                className={`w-2 h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                  activeStep === idx 
+                    ? "bg-accent scale-110 shadow-[0_0_8px_rgba(44,242,122,0.6)]" 
+                    : "bg-white/20"
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+
       </div>
     </section>
   );
@@ -162,24 +238,24 @@ export function KolSection() {
   ];
 
   return (
-    <section id="kols" className="w-full py-32 bg-[#030B1D] border-t border-white/5 relative">
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="kols" className="w-full py-16 sm:py-24 lg:py-32 bg-[#030B1D] border-t border-white/5 relative">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-6">
         
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="text-[14px] font-extrabold text-accent uppercase tracking-wider mb-6 inline-block">
+          <span className="text-[13px] md:text-[14px] font-extrabold text-accent uppercase tracking-wider mb-6 inline-block">
             Social Intelligence
           </span>
-          <h2 className="text-[36px] md:text-[48px] lg:text-[56px] font-black text-white tracking-tighter mb-4 leading-[1.05]">
+          <h2 className="text-[32px] md:text-[44px] lg:text-[56px] font-black text-white tracking-tighter mb-4 leading-[1.05]">
             Follow Smart Money
           </h2>
-          <p className="text-[18px] text-text-muted max-w-xl mx-auto leading-relaxed">
+          <p className="text-[16px] md:text-[18px] text-text-muted max-w-xl mx-auto leading-relaxed">
             Track the wallets and traders moving the market. Follow the logical flow from discovery to precise transaction audits.
           </p>
         </div>
 
-        {/* progression Flex list with Visual Flow Arrows */}
-        <div className="flex flex-row lg:flex-row items-center justify-start lg:justify-between gap-6 lg:gap-3 w-full overflow-x-auto lg:overflow-x-visible snap-x snap-mandatory scrollbar-none pb-6 lg:pb-0 px-4 lg:px-0">
+        {/* progression Flex list with Visual Flow Arrows (Desktop / Tablet >= 640px) */}
+        <div className="hidden sm:flex flex-row lg:flex-row items-center justify-start lg:justify-between gap-6 lg:gap-3 w-full overflow-x-auto lg:overflow-x-visible snap-x snap-mandatory scrollbar-none pb-6 lg:pb-0 px-4 lg:px-0">
           {screenshots.map((screen, idx) => (
             <React.Fragment key={idx}>
               <div className="flex flex-col items-center group w-[220px] lg:w-auto shrink-0 snap-center">
@@ -207,6 +283,41 @@ export function KolSection() {
           ))}
         </div>
 
+        {/* Mobile-first: Card stack layout (Vertical flow under sm) */}
+        <div className="flex sm:hidden flex-col items-center gap-10 w-full px-2">
+          {screenshots.map((screen, idx) => (
+            <React.Fragment key={idx}>
+              <div className="flex flex-col items-center w-full max-w-[280px]">
+                {/* Sliced Phone mockup (readable and un-shrunk) */}
+                <div className="relative w-full max-w-[200px] aspect-[960/1860] mb-6">
+                  <SlicedPhoneFrame 
+                    imageSrc="/flow/kol-4.png" 
+                    index={idx} 
+                    className="w-full h-full shadow-[0_20px_40px_rgba(0,0,0,0.6)]" 
+                  />
+                </div>
+                
+                {/* Text tag */}
+                <h4 className="text-lg font-black text-white mb-1.5 leading-none text-center">
+                  {screen.label}
+                </h4>
+                <span className="text-xs text-text-dim text-center leading-relaxed">
+                  {screen.desc}
+                </span>
+              </div>
+
+              {/* Vertical Flow Arrow indicator */}
+              {idx < 3 && (
+                <div className="flex items-center justify-center text-accent py-2 animate-bounce">
+                  <svg className="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                  </svg>
+                </div>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+
       </div>
     </section>
   );
@@ -222,30 +333,30 @@ export function MemecoinLaunchSection() {
   ];
 
   return (
-    <section id="memecoins" className="w-full py-32 bg-[#010816] border-t border-white/5 relative overflow-hidden">
+    <section id="memecoins" className="w-full py-16 sm:py-24 lg:py-32 bg-[#010816] border-t border-white/5 relative overflow-hidden">
       {/* Background decoration grid */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
         backgroundImage: "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
         backgroundSize: "60px 60px"
       }} />
 
-      <div className="max-w-6xl mx-auto px-6 relative z-10">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-6 relative z-10">
         
         {/* Header */}
-        <div className="text-center mb-20">
-          <span className="text-[14px] font-extrabold text-accent uppercase tracking-wider mb-6 inline-block">
+        <div className="text-center mb-16">
+          <span className="text-[13px] md:text-[14px] font-extrabold text-accent uppercase tracking-wider mb-6 inline-block">
             Viral Deployments
           </span>
-          <h2 className="text-[36px] md:text-[48px] lg:text-[56px] font-black text-white tracking-tighter mb-4 leading-[1.05]">
+          <h2 className="text-[32px] md:text-[44px] lg:text-[56px] font-black text-white tracking-tighter mb-4 leading-[1.05]">
             Launch a Memecoin From a Tweet
           </h2>
-          <p className="text-[18px] text-text-muted max-w-xl mx-auto leading-relaxed">
+          <p className="text-[16px] md:text-[18px] text-text-muted max-w-xl mx-auto leading-relaxed">
             Turn social attention into tradable assets in minutes. The complete automated timeline from Twitter discovery to live trading terminal.
           </p>
         </div>
 
-        {/* Timeline Layout */}
-        <div className="flex flex-row lg:grid lg:grid-cols-4 gap-6 lg:gap-8 relative items-start overflow-x-auto lg:overflow-x-visible snap-x snap-mandatory scrollbar-none pb-6 lg:pb-0 px-4 lg:px-0">
+        {/* Timeline Layout (Desktop / Tablet >= 640px) */}
+        <div className="hidden sm:flex lg:grid lg:grid-cols-4 gap-6 lg:gap-8 relative items-start overflow-x-auto lg:overflow-x-visible snap-x snap-mandatory scrollbar-none pb-6 lg:pb-0 px-4 lg:px-0">
           
           {/* Horizontal timeline connect bar on desktop */}
           <div className="absolute top-[236px] left-[8%] right-[8%] h-[2px] bg-gradient-to-r from-accent/20 via-accent/60 to-accent/20 pointer-events-none hidden lg:block z-0" />
@@ -270,7 +381,35 @@ export function MemecoinLaunchSection() {
               <p className="text-[13px] text-text-dim leading-relaxed max-w-[210px]">{step.desc}</p>
             </div>
           ))}
+        </div>
 
+        {/* Mobile-first: Vertical timeline onboarding flow (< 640px only) */}
+        <div className="flex sm:hidden flex-col gap-14 w-full relative pl-6">
+          {/* Vertical timeline line background */}
+          <div className="absolute left-[16px] top-4 bottom-4 w-[1px] bg-gradient-to-b from-accent/20 via-accent/60 to-accent/20" />
+
+          {steps.map((step, idx) => (
+            <div key={idx} className="flex gap-6 items-start relative z-10 w-full">
+              {/* Step indicator */}
+              <div className="w-8 h-8 rounded-full bg-[#030B1D] border border-accent text-accent font-black text-[12px] flex items-center justify-center shadow-[0_0_10px_rgba(44,242,122,0.25)] shrink-0">
+                {idx + 1}
+              </div>
+
+              <div className="flex flex-col items-start text-left">
+                <h3 className="text-base font-black text-white mb-1.5 leading-none">{step.title}</h3>
+                <p className="text-xs text-text-dim leading-relaxed mb-6 max-w-[240px]">{step.desc}</p>
+                
+                {/* Phone mockup */}
+                <div className="relative w-[180px] aspect-[960/1860]">
+                  <SlicedPhoneFrame 
+                    imageSrc="/flow/launch-4.png" 
+                    index={idx} 
+                    className="w-full h-full shadow-[0_20px_40px_rgba(0,0,0,0.6)]" 
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
       </div>
@@ -280,6 +419,9 @@ export function MemecoinLaunchSection() {
 
 // 4. Catch Early Trends on X (Radar / Intelligence Layer)
 export function TwitterTrendsSection() {
+  const [swiperActiveIndex, setSwiperActiveIndex] = useState<number>(0);
+  const swiperRef = useRef<HTMLDivElement>(null);
+
   const points = [
     { title: "Intelligence Layer", desc: "Live NLP parses keywords, hashtags, and social sentiment indexes." },
     { title: "Market Signals", desc: "Bypasses the noise to detect high-velocity transaction triggers." },
@@ -287,8 +429,18 @@ export function TwitterTrendsSection() {
     { title: "Social Alpha", desc: "Tracks influencers, alpha accounts, and project creator updates." }
   ];
 
+  const handleSwiperScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const container = e.currentTarget;
+    if (container.clientWidth > 0) {
+      const index = Math.round(container.scrollLeft / container.clientWidth);
+      if (index >= 0 && index < 4) {
+        setSwiperActiveIndex(index);
+      }
+    }
+  };
+
   return (
-    <section className="w-full py-32 bg-[#030B1D] border-t border-white/5 relative overflow-hidden">
+    <section className="w-full py-16 sm:py-24 lg:py-32 bg-[#030B1D] border-t border-white/5 relative overflow-hidden">
       
       {/* Animated Radar/Grid Backdrop */}
       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] pointer-events-none opacity-20 z-0">
@@ -311,17 +463,17 @@ export function TwitterTrendsSection() {
         </svg>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center relative z-10">
         
         {/* Left Content */}
         <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left">
-          <span className="text-[14px] font-extrabold text-accent uppercase tracking-wider mb-6 block">
+          <span className="text-[13px] md:text-[14px] font-extrabold text-accent uppercase tracking-wider mb-6 block">
             Intelligence Layer
           </span>
-          <h2 className="text-[36px] md:text-[48px] lg:text-[56px] font-black text-white tracking-tighter mb-6 leading-[1.05]">
+          <h2 className="text-[32px] md:text-[44px] lg:text-[56px] font-black text-white tracking-tighter mb-6 leading-[1.05]">
             Catch Early Trends On X
           </h2>
-          <p className="text-[18px] text-text-muted leading-relaxed mb-10 max-w-lg">
+          <p className="text-[16px] md:text-[18px] text-text-muted leading-relaxed mb-10 max-w-lg">
             Stay ahead of key social movements. Monitor social channels to capture alpha metrics, whale buy profiles, and launch correlations.
           </p>
 
@@ -343,15 +495,16 @@ export function TwitterTrendsSection() {
           </div>
         </div>
 
-        {/* Right screenshots layered depth layout */}
-        <div className="lg:col-span-6 flex justify-center items-center relative min-h-[500px]">
+        {/* Right screenshots: Layered depth layout or swiper */}
+        <div className="lg:col-span-6 flex justify-center items-center relative min-h-[460px] md:min-h-[500px]">
           
-          <div className="relative w-full max-w-[420px] h-[480px] flex items-center justify-center">
+          {/* Desktop/Tablet: Layered depth phones (>= 640px) */}
+          <div className="hidden sm:flex relative w-full max-w-[420px] h-[480px] items-center justify-center">
             {/* Phone 1 (Back Left) */}
             <motion.div 
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute left-0 top-10 z-10 w-[125px] sm:w-[155px] md:w-[180px] opacity-40 select-none pointer-events-none hidden sm:block"
+              className="absolute left-0 top-10 z-10 w-[125px] sm:w-[155px] md:w-[180px] opacity-40 select-none pointer-events-none"
             >
               <SlicedPhoneFrame imageSrc="/flow/memecoin-4.png" index={1} className="w-full" />
             </motion.div>
@@ -360,7 +513,7 @@ export function TwitterTrendsSection() {
             <motion.div 
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 5.4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-              className="absolute right-0 bottom-10 z-10 w-[125px] sm:w-[155px] md:w-[180px] opacity-40 select-none pointer-events-none hidden sm:block"
+              className="absolute right-0 bottom-10 z-10 w-[125px] sm:w-[155px] md:w-[180px] opacity-40 select-none pointer-events-none"
             >
               <SlicedPhoneFrame imageSrc="/flow/memecoin-4.png" index={2} className="w-full" />
             </motion.div>
@@ -373,6 +526,32 @@ export function TwitterTrendsSection() {
             >
               <SlicedPhoneFrame imageSrc="/flow/memecoin-4.png" index={0} className="w-full" />
             </motion.div>
+          </div>
+
+          {/* Mobile-first: Swipeable single featured mockup with pagination (< 640px) */}
+          <div className="flex sm:hidden flex-col items-center w-full max-w-[280px]">
+            <div 
+              ref={swiperRef}
+              onScroll={handleSwiperScroll}
+              className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-6 w-full pb-4"
+            >
+              {Array.from({ length: 4 }).map((_, idx) => (
+                <div key={idx} className="w-full shrink-0 snap-center flex justify-center">
+                  <div className="relative w-[190px] aspect-[960/1860]">
+                    <SlicedPhoneFrame 
+                      imageSrc="/flow/memecoin-4.png" 
+                      index={idx} 
+                      className="w-full h-full shadow-[0_20px_40px_rgba(0,0,0,0.65)]" 
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            {/* Page indicators (e.g. 1 / 4) */}
+            <div className="mt-4 px-4 py-1.5 rounded-full bg-white/5 border border-white/5 text-[10px] font-black text-accent tracking-widest uppercase font-mono select-none">
+              {swiperActiveIndex + 1} / 4
+            </div>
           </div>
 
         </div>
@@ -390,20 +569,27 @@ export function AssetsSection() {
     { title: "Deposit / Withdraw", desc: "Bridge liquidity from other chains or withdraw instantly." }
   ];
 
+  const mobileMetrics = [
+    { title: "Net Worth", value: "$24,850.50", desc: "Solana portfolio valuation, real-time index synced" },
+    { title: "Profit/Loss", value: "+$1,240.20", pct: "+5.25%", desc: "24h profit performance" },
+    { title: "Assets", value: "3 Tokens", desc: "SOL (60%), USDT (30%), USDC (10%) splits" },
+    { title: "Rewards Points", value: "1,250 PTS", desc: "Active trading incentive balance score" }
+  ];
+
   return (
-    <section id="portfolio" className="w-full py-32 bg-[#010816] border-t border-white/5 relative">
-      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+    <section id="portfolio" className="w-full py-16 sm:py-24 lg:py-32 bg-[#010816] border-t border-white/5 relative">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
         
-        {/* Left: Central portfolio phone with orbiting screenshots */}
-        <div className="lg:col-span-7 flex justify-center items-center relative min-h-[520px]">
+        {/* Left: Central portfolio phone (Desktop/Tablet vs Mobile) */}
+        <div className="lg:col-span-7 flex justify-center items-center relative min-h-[460px] md:min-h-[520px]">
           
-          <div className="relative w-full max-w-[420px] h-[480px] flex items-center justify-center">
-            
+          {/* Desktop/Tablet Left Side: Central portfolio phone with orbiting screenshots (>= 640px) */}
+          <div className="hidden sm:flex relative w-full max-w-[420px] h-[480px] items-center justify-center">
             {/* Orbiting Phone Left (Send) */}
             <motion.div 
               animate={{ y: [0, -14, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute left-[-20px] sm:left-[-40px] top-[12%] z-10 w-[100px] sm:w-[130px] md:w-[155px] opacity-40 shadow-xl border border-white/5 rounded-[24px] overflow-hidden hidden sm:block"
+              className="absolute left-[-20px] sm:left-[-40px] top-[12%] z-10 w-[100px] sm:w-[130px] md:w-[155px] opacity-40 shadow-xl border border-white/5 rounded-[24px] overflow-hidden"
             >
               <SlicedPhoneFrame imageSrc="/flow/portfolio-4.png" index={1} className="w-full" />
             </motion.div>
@@ -412,7 +598,7 @@ export function AssetsSection() {
             <motion.div 
               animate={{ y: [0, 14, 0] }}
               transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-              className="absolute right-[-20px] sm:right-[-40px] bottom-[12%] z-10 w-[100px] sm:w-[130px] md:w-[155px] opacity-40 shadow-xl border border-white/5 rounded-[24px] overflow-hidden hidden sm:block"
+              className="absolute right-[-20px] sm:right-[-40px] bottom-[12%] z-10 w-[100px] sm:w-[130px] md:w-[155px] opacity-40 shadow-xl border border-white/5 rounded-[24px] overflow-hidden"
             >
               <SlicedPhoneFrame imageSrc="/flow/portfolio-4.png" index={2} className="w-full" />
             </motion.div>
@@ -423,24 +609,33 @@ export function AssetsSection() {
               index={0} 
               className="w-[155px] sm:w-[190px] md:w-[220px] scale-110 z-20 shadow-[0_30px_70px_rgba(0,0,0,0.85)]" 
             />
+          </div>
 
+          {/* Mobile-first Left Side: Centered single mockup (< 640px) */}
+          <div className="flex sm:hidden justify-center items-center w-full mb-6">
+            <SlicedPhoneFrame 
+              imageSrc="/flow/portfolio-4.png" 
+              index={0} 
+              className="w-[180px] aspect-[960/1860] shadow-[0_20px_40px_rgba(0,0,0,0.7)]" 
+            />
           </div>
 
         </div>
 
         {/* Right Content */}
         <div className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left">
-          <span className="text-[14px] font-extrabold text-accent uppercase tracking-wider mb-6 block">
+          <span className="text-[13px] md:text-[14px] font-extrabold text-accent uppercase tracking-wider mb-6 block">
             Portfolio Security
           </span>
-          <h2 className="text-[36px] md:text-[48px] lg:text-[56px] font-black text-white tracking-tighter mb-6 leading-[1.05]">
+          <h2 className="text-[32px] md:text-[44px] lg:text-[56px] font-black text-white tracking-tighter mb-6 leading-[1.05]">
             Everything In One Wallet
           </h2>
-          <p className="text-[18px] text-text-muted leading-relaxed mb-10 max-w-lg">
+          <p className="text-[16px] md:text-[18px] text-text-muted leading-relaxed mb-10 max-w-lg">
             Send. Receive. Deposit. Withdraw. Manage your portfolio from one place. Audit token splits and historic balances inside a clean, high-density asset dashboard.
           </p>
 
-          <div className="flex flex-col gap-4 w-full">
+          {/* Desktop Content: operation cards (>= 640px) */}
+          <div className="hidden sm:flex flex-col gap-4 w-full">
             {operations.map((op, idx) => (
               <div 
                 key={idx} 
@@ -460,6 +655,24 @@ export function AssetsSection() {
               </div>
             ))}
           </div>
+
+          {/* Mobile-first Content: Stacked metrics cards (< 640px) */}
+          <div className="flex sm:hidden flex-col gap-3.5 w-full px-2">
+            {mobileMetrics.map((metric, idx) => (
+              <div 
+                key={idx} 
+                className="flex flex-col p-4 rounded-2xl border border-white/5 bg-white/[0.01] hover:border-accent/15 transition-all text-left w-full"
+              >
+                <div className="flex justify-between items-baseline mb-1">
+                  <span className="text-[10px] font-black text-text-dim uppercase tracking-wider">{metric.title}</span>
+                  {metric.pct && <span className="text-[10px] font-black text-buy font-mono bg-buy/10 px-2 py-0.5 rounded-full border border-buy/20">{metric.pct}</span>}
+                </div>
+                <div className="text-xl font-black font-mono text-white mb-1.5 leading-none">{metric.value}</div>
+                <p className="text-[11px] text-text-muted leading-tight">{metric.desc}</p>
+              </div>
+            ))}
+          </div>
+
         </div>
 
       </div>
@@ -503,24 +716,24 @@ export function VideoShowcaseSection() {
   };
 
   return (
-    <section className="w-full py-32 bg-[#030B1D] border-t border-white/5 relative">
-      <div className="max-w-6xl mx-auto px-6 flex flex-col items-center">
+    <section className="w-full py-16 sm:py-24 lg:py-32 bg-[#030B1D] border-t border-white/5 relative">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-6 flex flex-col items-center">
         
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="text-[14px] font-extrabold text-accent uppercase tracking-wider mb-6 inline-block">
+          <span className="text-[13px] md:text-[14px] font-extrabold text-accent uppercase tracking-wider mb-6 inline-block">
             Product Walkthrough
           </span>
-          <h2 className="text-[36px] md:text-[48px] lg:text-[56px] font-black text-white tracking-tighter mb-4 leading-[1.05]">
+          <h2 className="text-[32px] md:text-[44px] lg:text-[56px] font-black text-white tracking-tighter mb-4 leading-[1.05]">
             See ChadWallet In Action
           </h2>
-          <p className="text-[18px] text-text-muted max-w-xl mx-auto leading-relaxed">
+          <p className="text-[16px] md:text-[18px] text-text-muted max-w-xl mx-auto leading-relaxed">
             Watch how traders discover, launch and trade faster. Click on chips below to jump directly to product features.
           </p>
         </div>
 
         {/* Large iPhone Mockup playing `/chadwallet.mp4` */}
-        <div className="relative w-[285px] h-[580px] border-[10px] border-slate-950 rounded-[44px] bg-black shadow-[0_30px_70px_rgba(0,0,0,0.8)] overflow-hidden ring-1 ring-white/10 flex flex-col justify-between mb-12">
+        <div className="relative w-[90vw] max-w-[380px] sm:w-[285px] h-[480px] sm:h-[580px] border-[10px] border-slate-950 rounded-[36px] sm:rounded-[44px] bg-black shadow-[0_30px_70px_rgba(0,0,0,0.8)] overflow-hidden ring-1 ring-white/10 flex flex-col justify-between mb-12">
           {/* Notch */}
           <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-24 h-5 bg-black rounded-full z-30 flex items-center justify-center border border-white/5">
             <div className="w-1.5 h-1.5 bg-slate-900 rounded-full ml-auto mr-2" />
@@ -551,8 +764,9 @@ export function VideoShowcaseSection() {
             return (
               <button
                 key={idx}
+                type="button"
                 onClick={() => handleChipClick(chip.seekTo)}
-                className={`px-5 py-3 rounded-full text-[14px] font-black tracking-wide border transition-all cursor-pointer ${
+                className={`px-5 py-3 rounded-full text-[13px] md:text-[14px] font-black tracking-wide border transition-all cursor-pointer ${
                   isActive 
                     ? "bg-accent border-accent text-black shadow-[0_0_15px_rgba(44,242,122,0.25)] scale-105" 
                     : "bg-white/[0.02] border-white/5 text-text-muted hover:text-white hover:border-white/15"

@@ -13,7 +13,7 @@ export function MobileShowcase(): React.JSX.Element {
   const yParallax2 = useTransform(scrollY, [1200, 3000], [0, 50]);
 
   return (
-    <section id="download" className="w-full max-w-6xl py-32 px-6 sm:px-12 mx-auto select-none relative z-10 overflow-hidden border-t border-white/5 bg-[#010816]">
+    <section id="download" className="w-full max-w-6xl py-16 sm:py-24 lg:py-32 px-5 sm:px-8 lg:px-6 mx-auto select-none relative z-10 overflow-hidden border-t border-white/5 bg-[#010816]">
       {/* Decorative Orbs */}
       <div className="absolute right-[10%] top-[30%] w-[400px] h-[400px] rounded-full bg-accent/5 opacity-30 blur-[130px] pointer-events-none" />
       <div className="absolute left-[10%] bottom-[10%] w-[300px] h-[300px] rounded-full bg-accent-light/5 opacity-20 blur-[100px] pointer-events-none" />
@@ -99,7 +99,7 @@ export function MobileShowcase(): React.JSX.Element {
               href={APP_STORE_IOS}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 px-5 py-3.5 bg-black border border-white/8 hover:border-accent rounded-2xl hover:shadow-[0_0_20px_rgba(44,242,122,0.15)] transition-all w-48 text-left cursor-pointer"
+              className="flex items-center gap-3 px-5 h-14 bg-black border border-white/8 hover:border-accent rounded-2xl hover:shadow-[0_0_20px_rgba(44,242,122,0.15)] transition-all w-48 text-left cursor-pointer flex-shrink-0"
             >
               <Apple className="w-6 h-6 text-white fill-current" />
               <div className="flex flex-col">
@@ -118,7 +118,7 @@ export function MobileShowcase(): React.JSX.Element {
               href={APP_STORE_ANDROID}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 px-5 py-3.5 bg-black border border-white/8 hover:border-accent rounded-2xl hover:shadow-[0_0_20px_rgba(44,242,122,0.15)] transition-all w-48 text-left cursor-pointer"
+              className="flex items-center gap-3 px-5 h-14 bg-black border border-white/8 hover:border-accent rounded-2xl hover:shadow-[0_0_20px_rgba(44,242,122,0.15)] transition-all w-48 text-left cursor-pointer flex-shrink-0"
             >
               <Play className="w-6 h-6 text-white fill-current" />
               <div className="flex flex-col">
