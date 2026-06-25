@@ -181,8 +181,8 @@ chadwallet/
 │   ├── landing/                         # Domain: landing page
 │   │   ├── HeroSection/                 # Landing hero section
 │   │   ├── TokenBanner/                 # Rotating marquee banner
-│   │   ├── AppDownloadCTA/              # App download links
 │   │   ├── SignInButton/                # Social login authentication
+│   │   ├── MobileShowcase.tsx           # Mobile-first App Store style showcase
 │   │   └── index.ts                     # Landing components barrel
 │   ├── trading/                         # Domain: trading page
 │   │   ├── TradingLayout/               # Three-column layout wrapper
