@@ -3,6 +3,7 @@
 
 import React, { useState } from "react";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
+import { motion } from "framer-motion";
 
 export interface TradingLayoutProps {
   trendingList: React.ReactNode;
@@ -26,56 +27,42 @@ export function TradingLayout({
   const [activeTab, setActiveTab] = useState<"chart" | "swap" | "trades">("chart");
 
   return (
-    <div className="flex flex-col xl:flex-row gap-5 p-4 w-full max-w-[1600px] mx-auto min-h-screen">
+    <div className="flex flex-col xl:flex-row gap-6 p-4 md:p-6 w-full max-w-[1680px] mx-auto min-h-screen relative z-10 select-none">
       {/* 1. Left Column: Trending list (Desktop >=1280px only) */}
-      <div className="hidden xl:block w-[280px] flex-shrink-0 bg-bg-surface border border-border rounded-xl p-4 h-fit sticky top-20">
+      <div className="hidden xl:block w-[290px] flex-shrink-0 bg-[#0b1120]/45 border border-white/10 rounded-3xl p-5 h-fit sticky top-[88px] backdrop-blur-xl shadow-2xl">
         <ErrorBoundary>
           {trendingList}
         </ErrorBoundary>
       </div>
 
       {/* Mobile Tab Navigation Bar (<768px only) */}
-      <div className="md:hidden flex bg-bg-surface border border-border rounded-xl p-1 shadow-sm">
-        <button
-          type="button"
-          onClick={() => setActiveTab("chart")}
-          className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all ${
-            activeTab === "chart"
-              ? "bg-accent text-text-primary shadow-sm"
-              : "text-text-muted hover:text-text-primary"
-          }`}
-        >
-          Chart
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab("swap")}
-          className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all ${
-            activeTab === "swap"
-              ? "bg-accent text-text-primary shadow-sm"
-              : "text-text-muted hover:text-text-primary"
-          }`}
-        >
-          Swap
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab("trades")}
-          className={`flex-1 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all ${
-            activeTab === "trades"
-              ? "bg-accent text-text-primary shadow-sm"
-              : "text-text-muted hover:text-text-primary"
-          }`}
-        >
-          Trades
-        </button>
+      <div className="md:hidden flex bg-[#0b1120]/80 border border-white/10 rounded-2xl p-1 shadow-lg backdrop-blur-md sticky top-[72px] z-30">
+        {(["chart", "swap", "trades"] as const).map((tab) => (
+          <button
+            key={tab}
+            type="button"
+            onClick={() => setActiveTab(tab)}
+            className={`relative flex-1 py-2.5 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer text-center`}
+          >
+            <span className={activeTab === tab ? "text-white" : "text-text-muted hover:text-white"}>
+              {tab}
+            </span>
+            {activeTab === tab && (
+              <motion.div
+                layoutId="trading-mobile-tab"
+                className="absolute inset-0 bg-accent rounded-xl z-[-1] shadow-md shadow-accent/25"
+                transition={{ type: "spring", stiffness: 380, damping: 30 }}
+              />
+            )}
+          </button>
+        ))}
       </div>
 
       {/* Middle & Right columns wrapper */}
-      <div className="flex-1 flex flex-col xl:flex-row gap-5 min-w-0">
+      <div className="flex-1 flex flex-col xl:flex-row gap-6 min-w-0">
         
         {/* 2. Middle Column: Header, Price Chart, Holders List, Trades Feed */}
-        <div className={`flex-1 flex flex-col gap-4 min-w-0 ${
+        <div className={`flex-1 flex flex-col gap-5 min-w-0 ${
           activeTab === "chart" || activeTab === "trades" ? "flex" : "hidden md:flex"
         }`}>
           <ErrorBoundary>
@@ -85,7 +72,7 @@ export function TradingLayout({
             </div>
 
             {/* Chart & Holders */}
-            <div className={activeTab === "chart" ? "flex flex-col gap-4" : "hidden md:flex md:flex-col md:gap-4"}>
+            <div className={activeTab === "chart" ? "flex flex-col gap-5" : "hidden md:flex md:flex-col md:gap-5"}>
               {priceChart}
               {holdersList}
             </div>
@@ -98,7 +85,7 @@ export function TradingLayout({
         </div>
 
         {/* 3. Right Column: Swap Panel, User Position */}
-        <div className={`w-full xl:w-[320px] md:max-w-md md:mx-auto xl:max-w-none xl:mx-0 flex-shrink-0 flex flex-col gap-4 ${
+        <div className={`w-full xl:w-[340px] md:max-w-md md:mx-auto xl:max-w-none xl:mx-0 flex-shrink-0 flex flex-col gap-5 ${
           activeTab === "swap" ? "flex" : "hidden md:flex"
         }`}>
           <ErrorBoundary>

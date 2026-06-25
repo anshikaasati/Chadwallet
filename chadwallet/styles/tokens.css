@@ -1,17 +1,23 @@
 /* styles/tokens.css */
 :root {
-  --color-bg-primary: #0a0a0f;
-  --color-bg-surface: #12121a;
-  --color-accent: #7c3aed;
-  --color-accent-dim: rgba(124, 58, 237, 0.12);
-  --color-accent-glow: rgba(124, 58, 237, 0.35);
-  --color-accent-light: #a78bfa;
-  --color-buy: #22c55e;
-  --color-sell: #ef4444;
-  --color-text-primary: #f8fafc;
-  --color-text-muted: #94a3b8;
-  --color-border: #1e1e2f;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  --color-bg-primary: #010816;
+  --color-bg-surface: #030B1D;
+  --color-bg-surface-light: #071226;
+  --color-bg-glass: rgba(255, 255, 255, 0.03);
+  --color-bg-glass-hover: rgba(44, 242, 122, 0.1);
+  --color-accent: #2CF27A;
+  --color-accent-dim: rgba(44, 242, 122, 0.1);
+  --color-accent-glow: rgba(44, 242, 122, 0.35);
+  --color-accent-light: #24D96A;
+  --color-accent-blue: #00D4FF;
+  --color-buy: #2CF27A;
+  --color-sell: #FF5C5C;
+  --color-text-primary: #FFFFFF;
+  --color-text-muted: #AAB4C8;
+  --color-text-dim: #7D879A;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-xl: 28px;
 }

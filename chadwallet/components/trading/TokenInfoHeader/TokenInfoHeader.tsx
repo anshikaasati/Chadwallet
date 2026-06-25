@@ -77,74 +77,60 @@ export function TokenInfoHeader({
   const isPositive = tokenStats.priceChange24h >= 0;
 
   return (
-    <div className="p-5 bg-bg-surface/50 border border-border rounded-xl flex items-center justify-between flex-wrap gap-5 shadow-lg shadow-accent/[0.01] backdrop-blur-md relative overflow-hidden">
-      {/* Top micro border-accent glow */}
-      <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
+    <div className="p-5 bg-[#0b1120]/45 border border-white/10 rounded-3xl flex items-center justify-between flex-wrap gap-5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-xl relative overflow-hidden">
+      {/* Accent gradient top border */}
+      <div className="absolute top-0 inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-accent to-transparent" />
       
       <div className="flex items-center gap-3.5 min-w-0">
         <div className="relative shrink-0">
-          <div className="absolute inset-0 bg-accent rounded-full opacity-10 blur-sm" />
-          <TokenLogo uri={tokenStats.logoUri} symbol={tokenStats.symbol} size={40} />
+          <div className="absolute inset-0 bg-accent rounded-full opacity-20 blur-md" />
+          <TokenLogo uri={tokenStats.logoUri} symbol={tokenStats.symbol} size={42} />
         </div>
-        <div className="min-w-0 flex flex-col gap-0.5">
-          <h2 className="text-xl sm:text-2xl font-extrabold flex items-center gap-2 truncate text-white leading-tight">
+        <div className="min-w-0 flex flex-col gap-1">
+          <h2 className="text-xl sm:text-2xl font-black flex items-center gap-2 truncate text-white leading-none">
             {tokenStats.name} 
-            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-bg-primary text-text-muted border border-border">
+            <span className="text-[9px] font-black tracking-wider uppercase px-2 py-0.5 rounded-full bg-white/5 text-text-muted border border-white/5">
               {tokenStats.symbol}
             </span>
           </h2>
           <button
             type="button"
             onClick={handleCopy}
-            className="flex items-center gap-1.5 text-xs text-text-muted hover:text-accent-light font-mono select-none cursor-pointer text-left transition-colors group"
+            className="flex items-center gap-1.5 text-xs text-text-dim hover:text-accent-light font-mono select-none cursor-pointer text-left transition-colors group"
             title="Click to copy mint address"
           >
-            <span className="truncate max-w-[140px] sm:max-w-none">
+            <span className="truncate max-w-[120px] sm:max-w-none">
               {tokenStats.address}
             </span>
             {copied ? (
-              <span className="text-[9px] text-buy font-bold flex items-center gap-0.5 shrink-0 bg-buy/15 px-1 py-0.2 rounded border border-buy/20">
+              <span className="text-[8px] text-buy font-black uppercase tracking-wider flex items-center gap-0.5 shrink-0 bg-buy/10 px-1.5 py-0.2 rounded-full border border-buy/25">
                 ✓ Copied
               </span>
             ) : (
-              <svg className="w-3.5 h-3.5 text-text-muted/50 group-hover:text-accent-light transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-3.5 h-3.5 text-text-dim group-hover:text-accent-light transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
               </svg>
             )}
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-x-4 gap-y-3.5 w-full sm:grid-cols-3 md:flex md:flex-wrap items-center md:w-auto mt-4 md:mt-0 pt-4 border-t border-border/40 md:pt-0 md:border-t-0">
-        <div className="flex flex-col">
-          <span className="text-[10px] sm:text-xs font-bold text-text-muted uppercase tracking-wider">Price</span>
-          <span className="text-sm sm:text-lg font-extrabold text-text-primary">
-            {formatPrice(tokenStats.price)}
-          </span>
-        </div>
-        <div className="flex flex-col">
-          <span className="text-[10px] sm:text-xs font-bold text-text-muted uppercase tracking-wider">24h Change</span>
-          <span className={`text-sm sm:text-lg font-extrabold ${isPositive ? "text-buy" : "text-sell"}`}>
-            {formatPercent(tokenStats.priceChange24h)}
-          </span>
-        </div>
-        <div className="flex flex-col">
-          <span className="text-[10px] sm:text-xs font-bold text-text-muted uppercase tracking-wider">24h Volume</span>
-          <span className="text-sm sm:text-lg font-extrabold text-text-primary">
-            ${formatLargeNumber(tokenStats.volume24h)}
-          </span>
-        </div>
-        <div className="flex flex-col">
-          <span className="text-[10px] sm:text-xs font-bold text-text-muted uppercase tracking-wider">Market Cap</span>
-          <span className="text-sm sm:text-lg font-extrabold text-text-primary">
-            ${formatLargeNumber(tokenStats.marketCap || 0)}
-          </span>
-        </div>
-        <div className="flex flex-col">
-          <span className="text-[10px] sm:text-xs font-bold text-text-muted uppercase tracking-wider">Liquidity</span>
-          <span className="text-sm sm:text-lg font-extrabold text-text-primary">
-            ${formatLargeNumber(tokenStats.liquidity)}
-          </span>
-        </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 gap-x-6 gap-y-3 w-full sm:grid-cols-3 md:flex md:flex-wrap items-center md:w-auto mt-4 md:mt-0 pt-4 border-t border-white/5 md:pt-0 md:border-t-0">
+        {[
+          { label: "Price", value: formatPrice(tokenStats.price), valClass: "text-white" },
+          { label: "24h Change", value: formatPercent(tokenStats.priceChange24h), valClass: isPositive ? "text-buy" : "text-sell" },
+          { label: "24h Volume", value: `$${formatLargeNumber(tokenStats.volume24h)}`, valClass: "text-white" },
+          { label: "Market Cap", value: `$${formatLargeNumber(tokenStats.marketCap || 0)}`, valClass: "text-white" },
+          { label: "Liquidity", value: `$${formatLargeNumber(tokenStats.liquidity)}`, valClass: "text-white" },
+        ].map((stat, i) => (
+          <div key={i} className="flex flex-col min-w-[90px] hover:translate-y-[-1px] transition-transform duration-200">
+            <span className="text-[9px] font-black text-text-dim uppercase tracking-wider mb-0.5">{stat.label}</span>
+            <span className={`text-sm sm:text-base font-black font-mono leading-none ${stat.valClass}`}>
+              {stat.value}
+            </span>
+          </div>
+        ))}
       </div>
     </div>
   );

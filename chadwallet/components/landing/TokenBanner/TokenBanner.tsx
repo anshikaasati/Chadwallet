@@ -49,24 +49,29 @@ export function TokenBanner({
 
 
   return (
-    <div className="w-full py-2 bg-bg-surface border-y border-border overflow-hidden select-none">
+    <div className="w-full py-2 bg-[#0b1120]/45 backdrop-blur-md border-y border-white/5 overflow-hidden select-none">
       <div className={`flex items-center gap-6 whitespace-nowrap pause-on-hover ${marqueeClass}`}>
         {duplicatedTokens.map((token, index) => {
           const uniqueKey = `${token.address}-${index}`;
+          const isPositive = token.priceChange24h >= 0;
+          const glowColorClass = isPositive 
+            ? "hover:border-buy/40 hover:shadow-[0_0_15px_rgba(20,241,149,0.12)]" 
+            : "hover:border-sell/40 hover:shadow-[0_0_15px_rgba(255,92,92,0.12)]";
+
           return (
             <React.Fragment key={uniqueKey}>
               <Link
                 href={`/trade/${token.address}`}
-                className="inline-flex items-center gap-3 py-1 px-4 min-h-[44px] hover:bg-bg-primary hover:bg-opacity-50 rounded-md transition-all shrink-0 cursor-pointer"
+                className={`inline-flex items-center gap-3 py-1 px-4 min-h-[44px] bg-white/[0.02] border border-white/5 rounded-xl transition-all duration-300 shrink-0 cursor-pointer ${glowColorClass} hover:scale-[1.04]`}
               >
-                <TokenLogo uri={token.logoUri} symbol={token.symbol} size={24} />
-                <span className="font-bold text-text-primary text-sm">{token.symbol}</span>
-                <span className="text-text-muted text-sm font-medium">
+                <TokenLogo uri={token.logoUri} symbol={token.symbol} size={22} />
+                <span className="font-extrabold text-white text-xs tracking-wider">{token.symbol}</span>
+                <span className="text-text-muted text-xs font-mono">
                   {formatPrice(token.price)}
                 </span>
                 <PriceChange value={token.priceChange24h} />
               </Link>
-              <span className="text-border font-bold text-lg select-none">•</span>
+              <span className="text-white/10 font-bold text-base select-none">•</span>
             </React.Fragment>
           );
         })}

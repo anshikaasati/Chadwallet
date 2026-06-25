@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/Skeleton/Skeleton";
 import { Button } from "@/components/ui/Button/Button";
 import { INTERNAL_API } from "@/constants";
 import { formatPrice, formatPercent } from "@/lib/utils";
+import { TrendingUp } from "lucide-react";
 
 export interface TrendingTokenListProps {
   tokens: Token[];
@@ -71,39 +72,89 @@ export function TrendingTokenList({
     );
   }
 
+  // Generate a mock sparkline based on token address hash and 24h change
+  const getSimulatedSparkline = (address: string, change: number) => {
+    // Generate simple stable hash from address string
+    let hash = 0;
+    for (let i = 0; i < address.length; i++) {
+      hash = address.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    
+    const points = [];
+    const steps = 6;
+    const isUp = change >= 0;
+    
+    for (let i = 0; i < steps; i++) {
+      const x = (i / (steps - 1)) * 40;
+      // Generate pseudo-random y with range, biased by change sign
+      const seed = Math.abs(Math.sin(hash + i));
+      const bias = isUp ? (i / steps) * 12 : -(i / steps) * 12;
+      const y = 12 - (seed * 8 + bias); // bounded height
+      points.push(`${x},${Math.max(2, Math.min(18, y))}`);
+    }
+    
+    return points.join(" ");
+  };
+
   return (
     <div className="p-1">
-      <h3 className="font-bold text-sm uppercase tracking-wider text-text-muted mb-3 px-2">Trending</h3>
-      <div className="flex flex-col gap-2">
+      <h3 className="font-extrabold text-xs uppercase tracking-wider text-text-muted mb-4 px-2 flex items-center gap-1.5">
+        <TrendingUp className="w-4 h-4 text-accent-light" />
+        Trending List
+      </h3>
+      <div className="flex flex-col gap-2.5">
         {tokens.map((token) => {
           const isActive = token.address === activeAddress;
+          const isUp = token.priceChange24h >= 0;
+          const sparkPoints = getSimulatedSparkline(token.address, token.priceChange24h);
+          
           return (
             <button
               key={token.address}
               onClick={() => onSelectToken(token.address)}
-              className={`w-full text-left p-2.5 rounded-lg transition-all duration-300 border flex justify-between items-center gap-3 relative overflow-hidden ${
+              className={`w-full text-left p-3 rounded-2xl transition-all duration-300 border flex justify-between items-center gap-3 relative overflow-hidden group cursor-pointer ${
                 isActive
-                  ? "bg-accent/10 border-accent/60 text-text-primary shadow-lg shadow-accent/5 pl-3.5"
-                  : "bg-bg-surface/60 border-border/60 hover:bg-bg-surface/90 hover:border-border/80 hover:translate-x-0.5 text-text-primary"
+                  ? "bg-accent/10 border-accent/60 text-white shadow-[0_0_15px_rgba(153,69,255,0.15)] pl-4"
+                  : "bg-[#0b1120]/30 border-white/5 hover:bg-[#0b1120]/60 hover:border-white/10 hover:translate-x-0.5 text-text-muted"
               }`}
             >
               {isActive && (
                 <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-accent" />
               )}
+              
               <div className="flex items-center gap-2.5 min-w-0">
-                <TokenLogo uri={token.logoUri} symbol={token.symbol} size={28} />
+                <div className="relative shrink-0">
+                  <TokenLogo uri={token.logoUri} symbol={token.symbol} size={28} />
+                  <div className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-buy/20 border border-bg-surface flex items-center justify-center">
+                    <span className={`w-1 h-1 rounded-full ${isUp ? "bg-buy" : "bg-sell"}`} />
+                  </div>
+                </div>
                 <div className="min-w-0">
-                  <div className="font-bold text-sm truncate">{token.symbol}</div>
-                  <div className="text-xs text-text-muted truncate max-w-[120px]">{token.name}</div>
+                  <div className="font-black text-white text-xs tracking-wide truncate group-hover:text-accent-light transition-colors">{token.symbol}</div>
+                  <div className="text-[10px] text-text-dim truncate max-w-[100px] mt-0.5">{token.name}</div>
                 </div>
               </div>
+
+              {/* Sparkline in the center-right */}
+              <div className="hidden sm:block shrink-0 w-[40px] h-[20px] opacity-75 group-hover:opacity-100 transition-opacity">
+                <svg className="w-full h-full" viewBox="0 0 40 20">
+                  <polyline
+                    fill="none"
+                    stroke={isUp ? "#14F195" : "#FF5C5C"}
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    points={sparkPoints}
+                  />
+                </svg>
+              </div>
+
               <div className="text-right flex-shrink-0">
-                <div className="font-semibold text-sm">
+                <div className="font-mono font-bold text-xs text-white">
                   {formatPrice(token.price)}
                 </div>
-                <div className={`text-xs font-bold ${token.priceChange24h >= 0 ? "text-buy" : "text-sell"}`}>
-                  {token.priceChange24h >= 0 ? "▲" : "▼"}{" "}
-                  {formatPercent(token.priceChange24h)}
+                <div className={`text-[10px] font-black font-mono mt-0.5 ${isUp ? "text-buy" : "text-sell"}`}>
+                  {isUp ? "+" : ""}{formatPercent(token.priceChange24h)}
                 </div>
               </div>
             </button>
