@@ -24,6 +24,9 @@ interface TradingViewWindow extends Window {
 
 export function PriceChart({ tokenAddress }: PriceChartProps): React.JSX.Element {
   const containerId = useId().replace(/:/g, "_");
+  const [timeframe, setTimeframe] = React.useState<"15" | "60" | "240" | "D">("15");
+  const [isFavorite, setIsFavorite] = React.useState(false);
+  const [copiedShare, setCopiedShare] = React.useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -73,7 +76,7 @@ export function PriceChart({ tokenAddress }: PriceChartProps): React.JSX.Element
         if (isAdvanced) {
           activeWidget = new wWindow.TradingView.widget({
             symbol: tokenAddress === SOL_MINT ? "SOL" : "TOKEN",
-            interval: "15",
+            interval: timeframe,
             container: containerId,
             datafeed: createDatafeed(tokenAddress),
             library_path: "/tradingview/charting_library/",
@@ -99,9 +102,9 @@ export function PriceChart({ tokenAddress }: PriceChartProps): React.JSX.Element
           // CDN Fallback widget
           activeWidget = new wWindow.TradingView.widget({
             width: "100%",
-            height: isMobile ? 340 : 400,
+            height: "100%",
             symbol: tokenAddress === SOL_MINT ? "BINANCE:SOLUSDT" : "BINANCE:SOLUSDT",
-            interval: "15",
+            interval: timeframe,
             timezone: "Etc/UTC",
             theme: "dark",
             style: "1",
@@ -167,11 +170,7 @@ export function PriceChart({ tokenAddress }: PriceChartProps): React.JSX.Element
         }
       }
     };
-  }, [tokenAddress, containerId]);
-
-  const [timeframe, setTimeframe] = React.useState<"15" | "60" | "240" | "D">("15");
-  const [isFavorite, setIsFavorite] = React.useState(false);
-  const [copiedShare, setCopiedShare] = React.useState(false);
+  }, [tokenAddress, containerId, timeframe]);
 
   const handleShare = () => {
     if (typeof window !== "undefined") {
