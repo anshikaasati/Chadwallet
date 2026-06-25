@@ -179,28 +179,28 @@ export function KolSection() {
         </div>
 
         {/* progression Flex list with Visual Flow Arrows */}
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-3 w-full">
+        <div className="flex flex-row lg:flex-row items-center justify-start lg:justify-between gap-6 lg:gap-3 w-full overflow-x-auto lg:overflow-x-visible snap-x snap-mandatory scrollbar-none pb-6 lg:pb-0 px-4 lg:px-0">
           {screenshots.map((screen, idx) => (
             <React.Fragment key={idx}>
-              <div className="flex flex-col items-center group w-full lg:w-auto">
+              <div className="flex flex-col items-center group w-[220px] lg:w-auto shrink-0 snap-center">
                 {/* Sliced Phone mockup */}
                 <motion.div
                   whileHover={{ y: -8, scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   className="mb-6 relative w-full flex justify-center"
                 >
-                  <SlicedPhoneFrame imageSrc="/flow/kol-4.png" index={idx} className="w-[185px] md:w-[215px] shadow-[0_20px_40px_rgba(0,0,0,0.7)]" />
+                  <SlicedPhoneFrame imageSrc="/flow/kol-4.png" index={idx} className="w-[170px] sm:w-[185px] lg:w-[215px] shadow-[0_20px_40px_rgba(0,0,0,0.7)]" />
                 </motion.div>
                 
                 {/* Text tag */}
-                <h4 className="text-[16px] font-black text-white mb-1 leading-none">{screen.label}</h4>
-                <span className="text-[12px] text-text-dim">{screen.desc}</span>
+                <h4 className="text-[16px] font-black text-white mb-1 leading-none text-center">{screen.label}</h4>
+                <span className="text-[12px] text-text-dim text-center">{screen.desc}</span>
               </div>
 
               {/* Flow Arrow (Hidden after the last item and on mobile screen sizes) */}
               {idx < 3 && (
-                <div className="hidden lg:flex items-center justify-center text-accent/30 font-black text-[22px] rotate-90 lg:rotate-0 py-4">
-                  <ArrowRight className="w-6 h-6 text-accent animate-pulse" />
+                <div className="hidden lg:flex items-center justify-center text-accent/30 font-black text-[22px] shrink-0 py-4">
+                  <ArrowRight className="w-5 h-5 text-accent animate-pulse" />
                 </div>
               )}
             </React.Fragment>
@@ -245,19 +245,19 @@ export function MemecoinLaunchSection() {
         </div>
 
         {/* Timeline Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative items-start">
+        <div className="flex flex-row lg:grid lg:grid-cols-4 gap-6 lg:gap-8 relative items-start overflow-x-auto lg:overflow-x-visible snap-x snap-mandatory scrollbar-none pb-6 lg:pb-0 px-4 lg:px-0">
           
           {/* Horizontal timeline connect bar on desktop */}
           <div className="absolute top-[236px] left-[8%] right-[8%] h-[2px] bg-gradient-to-r from-accent/20 via-accent/60 to-accent/20 pointer-events-none hidden lg:block z-0" />
 
           {steps.map((step, idx) => (
-            <div key={idx} className="flex flex-col items-center text-center relative z-10 group">
+            <div key={idx} className="flex flex-col items-center text-center relative z-10 group w-[220px] lg:w-auto shrink-0 snap-center">
               {/* Phone mockup frame */}
               <motion.div
                 whileHover={{ y: -8, scale: 1.02 }}
                 className="mb-6 relative z-10 w-full flex justify-center"
               >
-                <SlicedPhoneFrame imageSrc="/flow/launch-4.png" index={idx} className="w-[180px] md:w-[210px] shadow-[0_20px_40px_rgba(0,0,0,0.7)]" />
+                <SlicedPhoneFrame imageSrc="/flow/launch-4.png" index={idx} className="w-[170px] sm:w-[180px] lg:w-[210px] shadow-[0_20px_40px_rgba(0,0,0,0.7)]" />
               </motion.div>
 
               {/* Step indicator */}
@@ -351,7 +351,7 @@ export function TwitterTrendsSection() {
             <motion.div 
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute left-0 top-10 z-10 w-[155px] md:w-[180px] opacity-40 select-none pointer-events-none"
+              className="absolute left-0 top-10 z-10 w-[125px] sm:w-[155px] md:w-[180px] opacity-40 select-none pointer-events-none hidden sm:block"
             >
               <SlicedPhoneFrame imageSrc="/flow/memecoin-4.png" index={1} className="w-full" />
             </motion.div>
@@ -360,7 +360,7 @@ export function TwitterTrendsSection() {
             <motion.div 
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 5.4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-              className="absolute right-0 bottom-10 z-10 w-[155px] md:w-[180px] opacity-40 select-none pointer-events-none"
+              className="absolute right-0 bottom-10 z-10 w-[125px] sm:w-[155px] md:w-[180px] opacity-40 select-none pointer-events-none hidden sm:block"
             >
               <SlicedPhoneFrame imageSrc="/flow/memecoin-4.png" index={2} className="w-full" />
             </motion.div>
@@ -369,7 +369,7 @@ export function TwitterTrendsSection() {
             <motion.div 
               animate={{ y: [0, -12, 0] }}
               transition={{ duration: 5.8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute z-20 w-[180px] md:w-[210px] shadow-[0_30px_60px_rgba(0,0,0,0.8)]"
+              className="absolute z-20 w-[150px] sm:w-[180px] md:w-[210px] shadow-[0_30px_60px_rgba(0,0,0,0.8)]"
             >
               <SlicedPhoneFrame imageSrc="/flow/memecoin-4.png" index={0} className="w-full" />
             </motion.div>
@@ -403,7 +403,7 @@ export function AssetsSection() {
             <motion.div 
               animate={{ y: [0, -14, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute left-[-40px] top-[12%] z-10 w-[130px] md:w-[155px] opacity-40 shadow-xl border border-white/5 rounded-[24px] overflow-hidden"
+              className="absolute left-[-20px] sm:left-[-40px] top-[12%] z-10 w-[100px] sm:w-[130px] md:w-[155px] opacity-40 shadow-xl border border-white/5 rounded-[24px] overflow-hidden hidden sm:block"
             >
               <SlicedPhoneFrame imageSrc="/flow/portfolio-4.png" index={1} className="w-full" />
             </motion.div>
@@ -412,7 +412,7 @@ export function AssetsSection() {
             <motion.div 
               animate={{ y: [0, 14, 0] }}
               transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-              className="absolute right-[-40px] bottom-[12%] z-10 w-[130px] md:w-[155px] opacity-40 shadow-xl border border-white/5 rounded-[24px] overflow-hidden"
+              className="absolute right-[-20px] sm:right-[-40px] bottom-[12%] z-10 w-[100px] sm:w-[130px] md:w-[155px] opacity-40 shadow-xl border border-white/5 rounded-[24px] overflow-hidden hidden sm:block"
             >
               <SlicedPhoneFrame imageSrc="/flow/portfolio-4.png" index={2} className="w-full" />
             </motion.div>
@@ -421,7 +421,7 @@ export function AssetsSection() {
             <SlicedPhoneFrame 
               imageSrc="/flow/portfolio-4.png" 
               index={0} 
-              className="w-[190px] md:w-[220px] scale-110 z-20 shadow-[0_30px_70px_rgba(0,0,0,0.85)]" 
+              className="w-[155px] sm:w-[190px] md:w-[220px] scale-110 z-20 shadow-[0_30px_70px_rgba(0,0,0,0.85)]" 
             />
 
           </div>

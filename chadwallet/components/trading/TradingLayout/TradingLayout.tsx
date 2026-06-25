@@ -36,7 +36,7 @@ export function TradingLayout({
       </div>
 
       {/* Mobile Tab Navigation Bar (<768px only) */}
-      <div className="md:hidden flex bg-[#0b1120]/80 border border-white/10 rounded-2xl p-1 shadow-lg backdrop-blur-md sticky top-[72px] z-30">
+      <div className="md:hidden flex bg-[#0b1120]/80 border border-white/10 rounded-2xl p-1 shadow-lg backdrop-blur-md sticky top-20 z-30">
         {(["chart", "swap", "trades"] as const).map((tab) => (
           <button
             key={tab}
@@ -59,7 +59,7 @@ export function TradingLayout({
       </div>
 
       {/* Middle & Right columns wrapper */}
-      <div className="flex-1 flex flex-col xl:flex-row gap-6 min-w-0">
+      <div className="flex-1 flex flex-col lg:flex-row gap-6 min-w-0">
         
         {/* 2. Middle Column: Header, Price Chart, Holders List, Trades Feed */}
         <div className={`flex-1 flex flex-col gap-5 min-w-0 ${
@@ -70,22 +70,22 @@ export function TradingLayout({
             <div className={activeTab === "chart" ? "block" : "hidden md:block"}>
               {tokenHeader}
             </div>
-
+ 
             {/* Chart & Holders */}
             <div className={activeTab === "chart" ? "flex flex-col gap-5" : "hidden md:flex md:flex-col md:gap-5"}>
               {priceChart}
               {holdersList}
             </div>
-
+ 
             {/* Trades Feed */}
             <div className={activeTab === "trades" ? "block" : "hidden md:block"}>
               {tradesFeed}
             </div>
           </ErrorBoundary>
         </div>
-
+ 
         {/* 3. Right Column: Swap Panel, User Position */}
-        <div className={`w-full xl:w-[340px] md:max-w-md md:mx-auto xl:max-w-none xl:mx-0 flex-shrink-0 flex flex-col gap-5 ${
+        <div className={`w-full lg:w-[320px] xl:w-[340px] md:max-w-md md:mx-auto lg:max-w-none lg:mx-0 flex-shrink-0 flex flex-col gap-5 ${
           activeTab === "swap" ? "flex" : "hidden md:flex"
         }`}>
           <ErrorBoundary>

@@ -194,13 +194,13 @@ export function PriceChart({ tokenAddress }: PriceChartProps): React.JSX.Element
   };
 
   return (
-    <div className="w-full lg:h-[700px] h-[450px] bg-[#0b1120]/45 border border-white/10 rounded-3xl flex flex-col overflow-hidden relative shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-xl">
+    <div className="w-full h-[350px] sm:h-[450px] lg:h-[500px] xl:h-[600px] bg-[#0b1120]/45 border border-white/10 rounded-3xl flex flex-col overflow-hidden relative shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-xl">
       <div className="absolute top-0 inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-accent/20 to-transparent" />
       
       {/* Chart Control Bar */}
-      <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/5 bg-black/10 flex-wrap gap-3">
+      <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/5 bg-black/10 flex-wrap sm:flex-nowrap gap-3">
         <div className="flex items-center gap-3">
-          <span className="text-[10px] font-black text-text-muted uppercase tracking-wider">Timeframes</span>
+          <span className="text-[10px] font-black text-text-muted uppercase tracking-wider hidden sm:inline-block">Timeframes</span>
           <div className="flex bg-black/45 border border-white/5 p-0.5 rounded-lg">
             {[
               { label: "15m", value: "15" },
@@ -244,7 +244,7 @@ export function PriceChart({ tokenAddress }: PriceChartProps): React.JSX.Element
           <button
             type="button"
             onClick={handleShare}
-            className={`h-8 px-3 rounded-lg border flex items-center gap-1.5 transition-all text-[10px] font-bold cursor-pointer ${
+            className={`h-8 px-2.5 sm:px-3 rounded-lg border flex items-center gap-1.5 transition-all text-[10px] font-bold cursor-pointer ${
               copiedShare
                 ? "bg-buy/10 border-buy/30 text-buy"
                 : "bg-white/5 border-white/10 text-text-dim hover:text-white hover:border-white/20"
@@ -252,7 +252,9 @@ export function PriceChart({ tokenAddress }: PriceChartProps): React.JSX.Element
             title="Copy Page Link"
           >
             <Share2 className="w-3.5 h-3.5" />
-            {copiedShare ? "Copied" : "Share"}
+            <span className={copiedShare ? "inline" : "hidden sm:inline"}>
+              {copiedShare ? "Copied" : "Share"}
+            </span>
           </button>
 
           {/* Fullscreen */}
@@ -267,7 +269,19 @@ export function PriceChart({ tokenAddress }: PriceChartProps): React.JSX.Element
         </div>
       </div>
 
-      <div id={containerId} className="flex-1 w-full h-full min-h-[300px]" />
+      <style dangerouslySetInnerHTML={{ __html: `
+        #${containerId} {
+          height: 100% !important;
+          min-height: 100% !important;
+        }
+        #${containerId} > div {
+          height: 100% !important;
+        }
+        #${containerId} iframe {
+          height: 100% !important;
+        }
+      `}} />
+      <div id={containerId} className="flex-1 w-full h-full min-h-[250px] sm:min-h-[300px]" />
     </div>
   );
 }

@@ -52,10 +52,11 @@ export function WalletButton(): React.JSX.Element {
       ) : (
         <button
           onClick={handleWalletClick}
-          className="relative px-5 py-2.5 bg-accent hover:bg-accent-light text-black font-extrabold rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md shadow-accent/10 hover:shadow-accent/20 flex items-center gap-2 cursor-pointer text-sm"
+          className="relative px-3 py-2 sm:px-5 sm:py-2.5 bg-accent hover:bg-accent-light text-black font-extrabold rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md shadow-accent/10 hover:shadow-accent/20 flex items-center gap-1.5 sm:gap-2 cursor-pointer text-xs sm:text-sm"
         >
-          <Wallet className="w-4 h-4 text-black" />
-          <span>Connect Wallet</span>
+          <Wallet className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-black flex-shrink-0" />
+          <span className="hidden sm:inline">Connect Wallet</span>
+          <span className="inline sm:hidden">Connect</span>
         </button>
       )}
     </div>

@@ -122,7 +122,7 @@ export function HeroSection(): React.JSX.Element {
           {/* Floating Screenshot 1 (Top Left) */}
           <motion.div
             style={{ y: yParallax1 }}
-            className="absolute left-[-20px] top-[10%] w-[110px] md:w-[130px] rounded-2xl overflow-hidden border border-white/5 shadow-2xl z-10 opacity-30 select-none pointer-events-none"
+            className="absolute left-[-20px] top-[10%] w-[110px] md:w-[130px] rounded-2xl overflow-hidden border border-white/5 shadow-2xl z-10 opacity-30 select-none pointer-events-none hidden md:block"
           >
             <Image
               src="/app store/discover.png"
@@ -136,7 +136,7 @@ export function HeroSection(): React.JSX.Element {
           {/* Floating Screenshot 2 (Bottom Left) */}
           <motion.div
             style={{ y: yParallax2 }}
-            className="absolute left-0 bottom-[10%] w-[110px] md:w-[130px] rounded-2xl overflow-hidden border border-white/5 shadow-2xl z-10 opacity-25 select-none pointer-events-none"
+            className="absolute left-0 bottom-[10%] w-[110px] md:w-[130px] rounded-2xl overflow-hidden border border-white/5 shadow-2xl z-10 opacity-25 select-none pointer-events-none hidden md:block"
           >
             <Image
               src="/app store/kol.png"
@@ -150,7 +150,7 @@ export function HeroSection(): React.JSX.Element {
           {/* Floating Screenshot 3 (Top Right) */}
           <motion.div
             style={{ y: yParallax3 }}
-            className="absolute right-[-10px] top-[15%] w-[110px] md:w-[130px] rounded-2xl overflow-hidden border border-white/5 shadow-2xl z-10 opacity-25 select-none pointer-events-none"
+            className="absolute right-[-10px] top-[15%] w-[110px] md:w-[130px] rounded-2xl overflow-hidden border border-white/5 shadow-2xl z-10 opacity-25 select-none pointer-events-none hidden md:block"
           >
             <Image
               src="/app store/launch.png"
@@ -164,7 +164,7 @@ export function HeroSection(): React.JSX.Element {
           {/* Floating Screenshot 4 (Bottom Right) */}
           <motion.div
             style={{ y: yParallax4 }}
-            className="absolute right-0 bottom-[15%] w-[110px] md:w-[130px] rounded-2xl overflow-hidden border border-white/5 shadow-2xl z-10 opacity-35 select-none pointer-events-none"
+            className="absolute right-0 bottom-[15%] w-[110px] md:w-[130px] rounded-2xl overflow-hidden border border-white/5 shadow-2xl z-10 opacity-35 select-none pointer-events-none hidden md:block"
           >
             <Image
               src="/app store/portfolio.png"

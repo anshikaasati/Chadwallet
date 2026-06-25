@@ -66,6 +66,14 @@ export function HoldersList({
     <div className="p-5 bg-[#0b1120]/45 border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-xl flex flex-col overflow-hidden relative">
       <div className="absolute top-0 inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-accent/20 to-transparent" />
       
+      <style dangerouslySetInnerHTML={{ __html: `
+        @media (max-width: 767px) {
+          .holder-row-item:nth-child(n+11) {
+            display: none !important;
+          }
+        }
+      `}} />
+
       <div className="flex items-center justify-between mb-4 border-b border-white/5 pb-2.5">
         <h3 className="font-extrabold text-xs uppercase tracking-wider text-text-muted flex items-center gap-1.5">
           <Users className="w-4 h-4 text-accent-light" />
@@ -87,7 +95,7 @@ export function HoldersList({
           </thead>
           <tbody className="divide-y divide-white/[0.03]">
             {topHolders.map((holder, idx) => (
-              <tr key={holder.address} className="hover:bg-white/[0.02] transition-colors group">
+              <tr key={holder.address} className="hover:bg-white/[0.02] transition-colors group holder-row-item">
                 <td className="py-2.5 pl-1 font-extrabold text-text-dim">
                   {idx === 0 ? "🥇 #1" : idx === 1 ? "🥈 #2" : idx === 2 ? "🥉 #3" : `#${idx + 1}`}
                 </td>
